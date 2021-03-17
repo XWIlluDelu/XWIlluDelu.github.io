@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>虚妄IlluDelu的Blog</title>
+  <icon>https://www.gravatar.com/avatar/6ab71b94b2b4a0ea7b17288bdb9ce49b</icon>
+  
+  <link href="https://xwilludelu.gitee.io/atom.xml" rel="self"/>
+  
+  <link href="https://xwilludelu.gitee.io/"/>
+  <updated>2021-02-28T14:18:02.346Z</updated>
+  <id>https://xwilludelu.gitee.io/</id>
+  
+  <author>
+    <name>虚妄IlluDelu</name>
+    <email>XWIlluDelu@outlook.com</email>
+  </author>
+  
+  <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Welcome，欢迎访问我的博客。</title>
+    <link href="https://xwilludelu.gitee.io/Welcome/"/>
+    <id>https://xwilludelu.gitee.io/Welcome/</id>
+    <published>2021-02-27T16:00:00.000Z</published>
+    <updated>2021-02-28T14:18:02.346Z</updated>
+    
+    <content type="html"><![CDATA[<p>我等你等了好————久啦！😘<br>进来随便转转看看呗。😏<br><img src="https://gitee.com/xwilludelu/pic/raw/master/picture/Welcome%EF%BC%8C%E6%AC%A2%E8%BF%8E%E8%AE%BF%E9%97%AE%E6%88%91%E7%9A%84%E5%8D%9A%E5%AE%A2.jpg" alt=""></p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;p&gt;我等你等了好————久啦！😘&lt;br&gt;
+进来随便转转看看呗。😏&lt;br&gt;
+&lt;img src=&quot;https://gitee.com/xwilludelu/pic/raw/master/picture/Welcome%EF%BC%8C%E6%AC%A2%E8%BF%8E%E8%</summary>
+      
+    
+    
+    
+    
+    <category term="其他" scheme="https://xwilludelu.gitee.io/tags/%E5%85%B6%E4%BB%96/"/>
+    
+  </entry>
+  
+</feed>
