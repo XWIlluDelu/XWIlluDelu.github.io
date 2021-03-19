@@ -6,7 +6,7 @@
   <link href="https://xwilludelu.gitee.io/atom.xml" rel="self"/>
   
   <link href="https://xwilludelu.gitee.io/"/>
-  <updated>2021-03-18T18:00:16.195Z</updated>
+  <updated>2021-03-19T16:57:04.990Z</updated>
   <id>https://xwilludelu.gitee.io/</id>
   
   <author>
@@ -21,7 +21,7 @@
     <link href="https://xwilludelu.gitee.io/%E6%AC%A2%E8%BF%8E%E8%AE%BF%E9%97%AE%E6%88%91%E7%9A%84%E5%8D%9A%E5%AE%A2%EF%BC%8CWelcome/"/>
     <id>https://xwilludelu.gitee.io/%E6%AC%A2%E8%BF%8E%E8%AE%BF%E9%97%AE%E6%88%91%E7%9A%84%E5%8D%9A%E5%AE%A2%EF%BC%8CWelcome/</id>
     <published>2021-03-18T16:00:00.000Z</published>
-    <updated>2021-03-18T18:00:16.195Z</updated>
+    <updated>2021-03-19T16:57:04.990Z</updated>
     
     <content type="html"><![CDATA[<p>我等你等了好————久啦！😘<br>进来随便转转看看呗。😏<br><img src="https://gitee.com/xwilludelu/pic/raw/master/pic/%E6%AC%A2%E8%BF%8E%E8%AE%BF%E9%97%AE%E6%88%91%E7%9A%84%E5%8D%9A%E5%AE%A2.jpg" alt="欢迎访问我的博客"></p>]]></content>
     
@@ -44,9 +44,20 @@
     <title>实分析 Real Analysis</title>
     <link href="https://xwilludelu.gitee.io/%E5%AE%9E%E5%88%86%E6%9E%90%EF%BC%8CReal%20Analysis/"/>
     <id>https://xwilludelu.gitee.io/%E5%AE%9E%E5%88%86%E6%9E%90%EF%BC%8CReal%20Analysis/</id>
-    <published>2021-03-17T16:00:00.000Z</published>
-    <updated>2021-03-18T17:59:34.784Z</updated>
+    <published>2021-03-18T16:00:00.000Z</published>
+    <updated>2021-03-19T16:59:34.105Z</updated>
     
+    <content type="html"><![CDATA[<h1>实分析</h1><p>因为感觉实分析很有趣也很重要，所以就决定要重新维护起博客。😏<br>学校里实分析课用的教材是**《实变函数论》（第三版）——周民强**，<br>所以博客的主干还是教材和课上的笔记。<br>当然，如果在别的地方看到一些有意思的东西，我也会加进去的。😄<br>（拜托坚持更新下去，就算是为了每一篇文章里面放一个小姐姐！）<br><img src="https://gitee.com/xwilludelu/pic/raw/master/pic/%E5%AE%9E%E5%88%86%E6%9E%90.jpg" alt="实分析"></p><h2 id="目录">目录</h2><p><a href="#page1">第一章 集合与点集</a><br><a href="#page2">第二章 Lebesgue测度</a>(施工中)<br><a href="#page3">第三章 可测函数</a>(施工中)<br><a href="#page4">第四章 Lebesgue积分</a>(施工中)<br><a href="#page5">第五章 微分与不定积分</a>(施工中)<br><a href="#page4">第六章 $L^P$空间</a>(施工中)</p><div id = "anchor1"></div>## 第一章 集合与点集]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h1&gt;实分析&lt;/h1&gt;
+&lt;p&gt;因为感觉实分析很有趣也很重要，所以就决定要重新维护起博客。😏&lt;br&gt;
+学校里实分析课用的教材是**《实变函数论》（第三版）——周民强**，&lt;br&gt;
+所以博客的主干还是教材和课上的笔记。&lt;br&gt;
+当然，如果在别的地方看到一些有意思的东西，我也会加进</summary>
+      
     
     
     
