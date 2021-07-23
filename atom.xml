@@ -1,25 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-  <title>虚妄IlluDelu的Blog</title>
-  <icon>https://www.gravatar.com/avatar/6ab71b94b2b4a0ea7b17288bdb9ce49b</icon>
+  <title>思玄Eureka的Blog</title>
+  <icon>https://www.gravatar.com/avatar/2de44832bac4a786dd816de50ed12865</icon>
   
-  <link href="https://xwilludelu.gitee.io/atom.xml" rel="self"/>
+  <link href="https://wangs1xuancn.gitee.io/atom.xml" rel="self"/>
   
-  <link href="https://xwilludelu.gitee.io/"/>
+  <link href="https://wangs1xuancn.gitee.io/"/>
   <updated>2021-07-23T13:25:57.971Z</updated>
-  <id>https://xwilludelu.gitee.io/</id>
+  <id>https://wangs1xuancn.gitee.io/</id>
   
   <author>
-    <name>虚妄IlluDelu</name>
-    <email>XWIlluDelu@outlook.com</email>
+    <name>思玄Eureka</name>
+    <email>Wangs1xuancn@outlook.com</email>
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
     <title>欢迎访问我的博客，Welcome！</title>
-    <link href="https://xwilludelu.gitee.io/%EF%BC%81%E6%AC%A2%E8%BF%8E%E8%AE%BF%E9%97%AE%E6%88%91%E7%9A%84%E5%8D%9A%E5%AE%A2%EF%BC%8CWelcome%EF%BC%81/"/>
-    <id>https://xwilludelu.gitee.io/%EF%BC%81%E6%AC%A2%E8%BF%8E%E8%AE%BF%E9%97%AE%E6%88%91%E7%9A%84%E5%8D%9A%E5%AE%A2%EF%BC%8CWelcome%EF%BC%81/</id>
+    <link href="https://wangs1xuancn.gitee.io/%EF%BC%81%E6%AC%A2%E8%BF%8E%E8%AE%BF%E9%97%AE%E6%88%91%E7%9A%84%E5%8D%9A%E5%AE%A2%EF%BC%8CWelcome%EF%BC%81/"/>
+    <id>https://wangs1xuancn.gitee.io/%EF%BC%81%E6%AC%A2%E8%BF%8E%E8%AE%BF%E9%97%AE%E6%88%91%E7%9A%84%E5%8D%9A%E5%AE%A2%EF%BC%8CWelcome%EF%BC%81/</id>
     <published>2021-07-22T16:00:00.000Z</published>
     <updated>2021-07-23T13:25:57.971Z</updated>
     
@@ -36,7 +36,7 @@
     
     
     
-    <category term="其他" scheme="https://xwilludelu.gitee.io/tags/%E5%85%B6%E4%BB%96/"/>
+    <category term="其他" scheme="https://wangs1xuancn.gitee.io/tags/%E5%85%B6%E4%BB%96/"/>
     
   </entry>
   
