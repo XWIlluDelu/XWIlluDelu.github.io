@@ -417,15 +417,13 @@ $(function() {
 					if($("#hitokoto").data('st') == true){
 						$.get("https://v1.hitokoto.cn/", function (data) {
 						var data = data;
-						var str =  data.hitokoto
-                        // + " —— "		
+						var str =  data.hitokoto + " —— "		
 						var options = {
 						  strings: [ 
 							//str + "Who??^1000",
 							//str + "It's me^2000",
 							//str +'Haha, make a joke',
-							str
-                            // + data.from,
+							str + data.from,
 						  ],
 						  typeSpeed: 90,
 						  startDelay: 500,
