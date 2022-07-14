@@ -105,6 +105,8 @@ var Diaspora = {
                     comment.click();
                 }
             }, 0)
+            var math = document.getElementById("single")
+            MathJax.Hub.Queue(["Typeset", MathJax.Hub, math])
         })
     },
     preview: function() {
@@ -417,7 +419,7 @@ $(function() {
 					if($("#hitokoto").data('st') == true){
 						$.get("https://v1.hitokoto.cn/", function (data) {
 						var data = data;
-						var str =  data.hitokoto + " —— "		
+						var str =  data.hitokoto + " ——  By "		
 						var options = {
 						  strings: [ 
 							//str + "Who??^1000",
@@ -543,7 +545,7 @@ $(function() {
                 }else{
                   hash = $(e.target).attr('href')
                 }
-                to  = $("a.headerlink[href='" + hash + "']")
+                to  = $(decodeURI(hash))
                 $("html,body").animate({
                   scrollTop: to.offset().top - 50
                 }, 300);
