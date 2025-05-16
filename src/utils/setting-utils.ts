@@ -12,16 +12,19 @@ export function getDefaultHue(): number {
 	return Number.parseInt(configCarrier?.dataset.hue || fallback);
 }
 
+// Customize
 // export function getHue(): number {
 // 	const stored = localStorage.getItem("hue");
 // 	return stored ? Number.parseInt(stored) : getDefaultHue();
 // }
 
+// Customize
 // I WANT TO USE THE DEFAULT HUE IN THE CONFIG CARRIER
 export function getHue(): number {
 	return getDefaultHue();
 }
 
+// Customize
 // export function setHue(hue: number): void {
 // 	localStorage.setItem("hue", String(hue));
 // 	const r = document.querySelector(":root") as HTMLElement;
@@ -31,6 +34,7 @@ export function getHue(): number {
 // 	r.style.setProperty("--hue", String(hue));
 // }
 
+// Customize
 // I DON'T WANT TO STORE HUE IN LOCAL STORAGE ANYMORE
 export function setHue(hue: number): void {
 	// localStorage.setItem("hue", String(hue)); // No longer store hue in localStorage

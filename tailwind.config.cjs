@@ -6,8 +6,14 @@ module.exports = {
 	theme: {
 		extend: {
 			fontFamily: {
+				// Customize
 				// sans: ["Roboto", "sans-serif", ...defaultTheme.fontFamily.sans],
-				sans: ["NotoSans", "NotoSansSC", defaultTheme.fontFamily.sans],
+				sans: [
+					"NotoSansMono",
+					"NotoSansSC",
+					// "NotoColorEmoji",
+					...defaultTheme.fontFamily.sans,
+				],
 				// sans: [defaultTheme.fontFamily.sans],
 			},
 		},
