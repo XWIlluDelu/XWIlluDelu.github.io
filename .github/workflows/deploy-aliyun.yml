@@ -1,0 +1,63 @@
+name: Deploy to Aliyun OSS
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
+
+concurrency:
+  group: aliyun-oss-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    if: ${{ vars.ALIYUN_OSS_BUCKET != '' && vars.ALIYUN_OSS_ENDPOINT != '' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+
+      - name: Setup Node.js
+        uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f
+        with:
+          node-version: 22
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v5.0.0
+        with:
+          run_install: false
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build site
+        run: pnpm build
+
+      - name: Install ossutil
+        run: |
+          sudo -v
+          curl -fsSL https://gosspublic.alicdn.com/ossutil/install.sh | sudo bash
+          ossutil --version
+
+      - name: Configure ossutil
+        env:
+          ALIYUN_ACCESS_KEY_ID: ${{ secrets.ALIYUN_ACCESS_KEY_ID }}
+          ALIYUN_ACCESS_KEY_SECRET: ${{ secrets.ALIYUN_ACCESS_KEY_SECRET }}
+          ALIYUN_OSS_ENDPOINT: ${{ vars.ALIYUN_OSS_ENDPOINT }}
+        run: |
+          test -n "$ALIYUN_ACCESS_KEY_ID"
+          test -n "$ALIYUN_ACCESS_KEY_SECRET"
+          ossutil config \
+            -e "$ALIYUN_OSS_ENDPOINT" \
+            -i "$ALIYUN_ACCESS_KEY_ID" \
+            -k "$ALIYUN_ACCESS_KEY_SECRET" \
+            -c .ossutilconfig
+
+      - name: Upload dist to OSS
+        env:
+          ALIYUN_OSS_BUCKET: ${{ vars.ALIYUN_OSS_BUCKET }}
+        run: |
+          ossutil sync dist/ "oss://${ALIYUN_OSS_BUCKET}/" --delete -f -c .ossutilconfig
