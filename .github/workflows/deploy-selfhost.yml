@@ -1,0 +1,57 @@
+name: Deploy to Self-hosted Server
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
+
+concurrency:
+  group: selfhost-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+
+      - name: Setup Node.js
+        uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f
+        with:
+          node-version: 22
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v5.0.0
+        with:
+          run_install: false
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build site
+        run: pnpm build
+
+      - name: Configure SSH
+        env:
+          SELFHOST_SSH_PRIVATE_KEY: ${{ secrets.SELFHOST_SSH_PRIVATE_KEY }}
+          SELFHOST_KNOWN_HOSTS: ${{ secrets.SELFHOST_KNOWN_HOSTS }}
+        run: |
+          install -m 700 -d ~/.ssh
+          printf '%s\n' "$SELFHOST_SSH_PRIVATE_KEY" > ~/.ssh/selfhost_deploy_key
+          printf '%s\n' "$SELFHOST_KNOWN_HOSTS" > ~/.ssh/known_hosts
+          chmod 600 ~/.ssh/selfhost_deploy_key ~/.ssh/known_hosts
+
+      - name: Upload dist
+        env:
+          SELFHOST_HOST: ${{ vars.SELFHOST_HOST }}
+          SELFHOST_PORT: ${{ vars.SELFHOST_PORT }}
+          SELFHOST_USER: ${{ vars.SELFHOST_USER }}
+          SELFHOST_PATH: ${{ vars.SELFHOST_PATH }}
+        run: |
+          rsync -az --delete \
+            -e "ssh -i ~/.ssh/selfhost_deploy_key -p ${SELFHOST_PORT} -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes" \
+            dist/ "${SELFHOST_USER}@${SELFHOST_HOST}:${SELFHOST_PATH}/"
