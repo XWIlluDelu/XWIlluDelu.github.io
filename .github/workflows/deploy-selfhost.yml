@@ -37,21 +37,20 @@ jobs:
 
       - name: Configure SSH
         env:
-          SELFHOST_SSH_PRIVATE_KEY: ${{ secrets.SELFHOST_SSH_PRIVATE_KEY }}
-          SELFHOST_KNOWN_HOSTS: ${{ secrets.SELFHOST_KNOWN_HOSTS }}
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          SSH_KNOWN_HOSTS: ${{ secrets.SSH_KNOWN_HOSTS }}
         run: |
           install -m 700 -d ~/.ssh
-          printf '%s\n' "$SELFHOST_SSH_PRIVATE_KEY" > ~/.ssh/selfhost_deploy_key
-          printf '%s\n' "$SELFHOST_KNOWN_HOSTS" > ~/.ssh/known_hosts
+          printf '%s\n' "$SSH_PRIVATE_KEY" > ~/.ssh/selfhost_deploy_key
+          printf '%s\n' "$SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
           chmod 600 ~/.ssh/selfhost_deploy_key ~/.ssh/known_hosts
 
       - name: Upload dist
         env:
-          SELFHOST_HOST: ${{ vars.SELFHOST_HOST }}
-          SELFHOST_PORT: ${{ vars.SELFHOST_PORT }}
-          SELFHOST_USER: ${{ vars.SELFHOST_USER }}
-          SELFHOST_PATH: ${{ vars.SELFHOST_PATH }}
+          SSH_HOST: ${{ vars.SSH_HOST }}
+          SSH_PORT: ${{ vars.SSH_PORT }}
+          DEPLOY_PATH: ${{ vars.DEPLOY_PATH }}
         run: |
           rsync -az --delete \
-            -e "ssh -i ~/.ssh/selfhost_deploy_key -p ${SELFHOST_PORT} -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes" \
-            dist/ "${SELFHOST_USER}@${SELFHOST_HOST}:${SELFHOST_PATH}/"
+            -e "ssh -i ~/.ssh/selfhost_deploy_key -p ${SSH_PORT} -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes" \
+            dist/ "root@${SSH_HOST}:${DEPLOY_PATH}/"
