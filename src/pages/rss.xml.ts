@@ -7,6 +7,7 @@ import sanitizeHtml from "sanitize-html";
 import { siteConfig } from "@/config";
 
 const parser = new MarkdownIt();
+const rssLanguage = siteConfig.lang.replaceAll("_", "-");
 
 function stripInvalidXmlChars(str: string): string {
 	return str.replace(
@@ -16,27 +17,29 @@ function stripInvalidXmlChars(str: string): string {
 	);
 }
 
-export async function GET(context: APIContext) {
+export async function GET(context: APIContext): Promise<Response> {
 	const blog = await getSortedPosts();
 
 	return rss({
 		title: siteConfig.title,
 		description: siteConfig.subtitle || "No description",
-		site: context.site ?? "https://fuwari.vercel.app",
-		items: blog.map((post) => {
-			const content =
-				typeof post.body === "string" ? post.body : String(post.body || "");
-			const cleanedContent = stripInvalidXmlChars(content);
-			return {
-				title: post.data.title,
-				pubDate: post.data.published,
-				description: post.data.description || "",
-				link: url(`/posts/${post.slug}/`),
-				content: sanitizeHtml(parser.render(cleanedContent), {
-					allowedTags: sanitizeHtml.defaults.allowedTags.concat(["img"]),
-				}),
-			};
-		}),
-		customData: `<language>${siteConfig.lang}</language>`,
+		site: context.site ?? "https://xwilludelu.github.io",
+		items: blog.map(
+			(post: Awaited<ReturnType<typeof getSortedPosts>>[number]) => {
+				const content =
+					typeof post.body === "string" ? post.body : String(post.body || "");
+				const cleanedContent = stripInvalidXmlChars(content);
+				return {
+					title: post.data.title,
+					pubDate: post.data.published,
+					description: post.data.description || "",
+					link: url(`/posts/${post.slug}/`),
+					content: sanitizeHtml(parser.render(cleanedContent), {
+						allowedTags: sanitizeHtml.defaults.allowedTags.concat(["img"]),
+					}),
+				};
+			},
+		),
+		customData: `<language>${rssLanguage}</language>`,
 	});
 }

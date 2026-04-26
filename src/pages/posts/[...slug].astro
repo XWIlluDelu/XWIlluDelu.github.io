@@ -26,6 +26,11 @@ const { entry } = Astro.props;
 const { Content, headings } = await entry.render();
 
 const { remarkPluginFrontmatter } = await entry.render();
+const postAuthor = entry.data.author ?? profileConfig.name;
+const postAuthorUrl =
+	entry.data.author && entry.data.author !== profileConfig.name
+		? undefined
+		: (Astro.site?.toString() ?? Astro.url.origin);
 
 const jsonLd = {
 	"@context": "https://schema.org",
@@ -35,8 +40,8 @@ const jsonLd = {
 	keywords: entry.data.tags,
 	author: {
 		"@type": "Person",
-		name: profileConfig.name,
-		url: Astro.site,
+		name: postAuthor,
+		...(postAuthorUrl ? { url: postAuthorUrl } : {}),
 	},
 	datePublished: formatDateToYYYYMMDD(entry.data.published),
 	inLanguage: entry.data.lang
@@ -106,7 +111,7 @@ const jsonLd = {
                 <Content />
             </Markdown>
 
-            {licenseConfig.enable && <License title={entry.data.title} slug={entry.slug} pubDate={entry.data.published} class="mb-6 rounded-xl license-container onload-animation"></License>}
+            {licenseConfig.enable && <License title={entry.data.title} slug={entry.slug} pubDate={entry.data.published} author={postAuthor} class="mb-6 rounded-xl license-container onload-animation"></License>}
 
         </div>
     </div>

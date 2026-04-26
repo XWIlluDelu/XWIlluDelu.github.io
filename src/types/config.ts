@@ -90,7 +90,8 @@ export type BlogPostData = {
 	tags: string[];
 	draft?: boolean;
 	image?: string;
-	category?: string;
+	category?: string | null;
+	author?: string;
 	prevTitle?: string;
 	prevSlug?: string;
 	nextTitle?: string;

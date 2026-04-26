@@ -29,6 +29,11 @@
           "type": "string"
         },
         {
+          "title": "author",
+          "name": "author",
+          "type": "string"
+        },
+        {
           "title": "published",
           "name": "published",
           "type": "datetime",
@@ -58,7 +63,7 @@
         },
         {
           "title": "language",
-          "name": "language",
+          "name": "lang",
           "type": "string"
         }
       ]
