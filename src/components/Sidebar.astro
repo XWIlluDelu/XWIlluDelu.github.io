@@ -87,15 +87,16 @@ const { tags, categories } = Astro.props;
 		align-items: center;
 		justify-content: center;
 		border-radius: 0.75rem;
-		background: rgb(0 0 0 / 0);
-		color: transparent;
-		transition: background 0.2s, color 0.2s;
+		background: rgb(0 0 0 / 0.35);
+		color: #fff;
+		opacity: 0;
+		transition: opacity 0.2s;
+		pointer-events: none;
 	}
 
 	.profile-avatar-link:hover .profile-avatar-overlay,
 	.profile-avatar-link:focus-visible .profile-avatar-overlay {
-		background: rgb(0 0 0 / 0.35);
-		color: #fff;
+		opacity: 1;
 	}
 
 	.profile-name {

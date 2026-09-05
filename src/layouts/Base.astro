@@ -41,7 +41,7 @@ const pageTitle = title ? `${title} - Huwari` : "Huwari - A minimal Astro blog t
 		<slot name="head" />
 	</head>
 	<body>
-		<header class="navbar">
+		<header class="navbar" transition:persist>
 			<div class="navbar-inner">
 				<a class="brand" href="/">
 					<span class="brand-icon"><Icon name="home" /></span>
@@ -69,7 +69,7 @@ const pageTitle = title ? `${title} - Huwari` : "Huwari - A minimal Astro blog t
 			</div>
 		</header>
 		<div class="page page-overlap">
-			<div class="onload">
+			<div transition:animate="fade">
 				<slot />
 			</div>
 			<footer class="footer">
@@ -118,22 +118,6 @@ const pageTitle = title ? `${title} - Huwari` : "Huwari - A minimal Astro blog t
 	img {
 		max-width: 100%;
 		height: auto;
-	}
-
-	@keyframes fade-in-up {
-		from {
-			transform: translateY(1.5rem);
-			opacity: 0;
-		}
-		to {
-			transform: translateY(0);
-			opacity: 1;
-		}
-	}
-
-	.onload {
-		animation: 300ms fade-in-up;
-		animation-fill-mode: backwards;
 	}
 
 	.navbar {
