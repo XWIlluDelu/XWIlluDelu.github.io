@@ -1,4 +1,4 @@
-import { mkdirSync, readdirSync, readFileSync, statSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, readdirSync, readFileSync, statSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import type { Loader } from "astro/loaders";
 import { extractGithubRepos } from "@/lib/directives";
@@ -79,11 +79,21 @@ async function fetchRepo(repo: string): Promise<RepoInfo> {
 export function githubLoader(contentDir: string): Loader {
 	return {
 		name: "huwari-github",
-		async load({ store, logger, parseData, watcher }) {
+		async load({ store, logger, parseData, generateDigest, meta, watcher }) {
 			const reload = async () => {
-				store.clear();
 				const files = collectMarkdownFiles(contentDir);
 				const repos = [...new Set(files.flatMap((file) => extractGithubRepos(readFileSync(file, "utf-8"))))];
+				const digest = generateDigest(repos.slice().sort().join(","));
+				if (
+					repos.length > 0 &&
+					existsSync(GITHUB_CACHE_PATH) &&
+					meta.get("repos-digest") === digest &&
+					repos.every((repo) => store.has(repo))
+				) {
+					return;
+				}
+				meta.set("repos-digest", digest);
+				store.clear();
 				if (repos.length === 0) return;
 				logger.info(`Fetching ${repos.length} GitHub repositor${repos.length === 1 ? "y" : "ies"}`);
 				const infos = await Promise.all(repos.map(fetchRepo));
@@ -93,8 +103,17 @@ export function githubLoader(contentDir: string): Loader {
 					store.set({ id: info.repo, data });
 					cache[info.repo] = info;
 				}
-				mkdirSync(join("./node_modules/.cache/huwari"), { recursive: true });
-				writeFileSync(GITHUB_CACHE_PATH, JSON.stringify(cache));
+				const serialized = JSON.stringify(cache);
+				let previous: string | null = null;
+				try {
+					previous = readFileSync(GITHUB_CACHE_PATH, "utf-8");
+				} catch {
+					/* first run */
+				}
+				if (previous !== serialized) {
+					mkdirSync(join("./node_modules/.cache/huwari"), { recursive: true });
+					writeFileSync(GITHUB_CACHE_PATH, serialized);
+				}
 			};
 			await reload();
 			if (watcher) {
