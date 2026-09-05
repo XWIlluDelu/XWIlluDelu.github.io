@@ -12,7 +12,12 @@ const { tags, categories } = Astro.props;
 
 <aside class="sidebar">
 	<section class="card profile">
-		<img class="profile-avatar" src="/images/demo-avatar.png" alt="Profile image" loading="lazy" />
+		<a class="profile-avatar-link" href="/about/" aria-label="Go to About Page">
+			<img class="profile-avatar" src="/images/demo-avatar.png" alt="Profile image" loading="lazy" />
+			<span class="profile-avatar-overlay" aria-hidden="true">
+				<Icon name="id-card" />
+			</span>
+		</a>
 		<p class="profile-name">Your Name</p>
 		<div class="profile-bar"></div>
 		<p class="profile-bio">A short bio.</p>
@@ -59,11 +64,38 @@ const { tags, categories } = Astro.props;
 	}
 
 	.profile-avatar {
+		display: block;
 		width: 100%;
-		max-width: 12rem;
 		aspect-ratio: 1;
 		object-fit: cover;
 		border-radius: 0.75rem;
+	}
+
+	.profile-avatar-link {
+		position: relative;
+		display: block;
+		max-width: 12rem;
+		margin: 0 auto;
+		border-radius: 0.75rem;
+		font-size: 3rem;
+	}
+
+	.profile-avatar-overlay {
+		position: absolute;
+		inset: 0;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		border-radius: 0.75rem;
+		background: rgb(0 0 0 / 0);
+		color: transparent;
+		transition: background 0.2s, color 0.2s;
+	}
+
+	.profile-avatar-link:hover .profile-avatar-overlay,
+	.profile-avatar-link:focus-visible .profile-avatar-overlay {
+		background: rgb(0 0 0 / 0.35);
+		color: #fff;
 	}
 
 	.profile-name {

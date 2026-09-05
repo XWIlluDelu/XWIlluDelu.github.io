@@ -1,19 +1,16 @@
 ---
-import { getEntry, render } from "astro:content";
 import Base from "../layouts/Base.astro";
 import Banner from "../components/Banner.astro";
 import Sidebar from "../components/Sidebar.astro";
 import Markdown from "../components/Markdown.astro";
+import { Content, frontmatter } from "../content/about.md";
 import { getCategoryList, getTagList } from "@/lib/content";
 
-const about = await getEntry("about", "about");
-if (!about) throw new Error("About content not found");
-const { Content } = await render(about);
 const tags = await getTagList();
 const categories = await getCategoryList();
 ---
 
-<Base title="About" description="About this blog">
+<Base title={frontmatter.title} description="About this blog">
 	<Banner />
 	<div class="layout">
 		<Sidebar tags={tags} categories={categories} />
