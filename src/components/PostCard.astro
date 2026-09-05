@@ -52,6 +52,9 @@ const { title, url, published, tags, category, description, image, words, minute
 	{image && (
 		<a class="post-thumb" href={url} aria-label={title} tabindex="-1">
 			<img src={image} alt="" loading="lazy" />
+			<span class="thumb-arrow" aria-hidden="true">
+				<Icon name="chevron-right" />
+			</span>
 		</a>
 	)}
 	{!image && (
@@ -155,9 +158,27 @@ const { title, url, published, tags, category, description, image, words, minute
 	}
 
 	.post-thumb {
+		position: relative;
 		display: block;
 		border-radius: 0.75rem;
 		overflow: hidden;
+		font-size: 2.5rem;
+	}
+
+	.post-thumb::before {
+		content: "";
+		position: absolute;
+		inset: 0;
+		z-index: 1;
+		background: rgb(0 0 0 / 0.3);
+		opacity: 0;
+		transition: opacity 0.2s;
+		pointer-events: none;
+	}
+
+	.post-thumb:hover::before,
+	.post-thumb:focus-visible::before {
+		opacity: 1;
 	}
 
 	.post-thumb img {
@@ -166,6 +187,26 @@ const { title, url, published, tags, category, description, image, words, minute
 		height: 100%;
 		max-height: 14rem;
 		object-fit: cover;
+	}
+
+	.thumb-arrow {
+		position: absolute;
+		inset: 0;
+		z-index: 2;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		color: #fff;
+		opacity: 0;
+		transform: scale(0.6);
+		transition: opacity 0.2s, transform 0.2s;
+		pointer-events: none;
+	}
+
+	.post-thumb:hover .thumb-arrow,
+	.post-thumb:focus-visible .thumb-arrow {
+		opacity: 1;
+		transform: scale(1);
 	}
 
 	.post-enter {
