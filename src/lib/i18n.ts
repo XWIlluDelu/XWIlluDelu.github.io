@@ -15,7 +15,6 @@ export const I18nKeys = [
   "more",
   "author",
   "publishedAt",
-  "license",
 ] as const;
 
 export type I18nKey = (typeof I18nKeys)[number];
@@ -37,7 +36,6 @@ const en: Record<I18nKey, string> = {
   more: "More",
   author: "Author",
   publishedAt: "Published at",
-  license: "License",
 };
 
 export function t(key: I18nKey): string {

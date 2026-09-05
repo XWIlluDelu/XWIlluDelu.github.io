@@ -77,9 +77,6 @@ const categories = await getCategoryList();
 				<TOC headings={headings} />
 			</div>
 		</div>
-		<p class="license-box">
-			License: CC BY-NC-SA 4.0
-		</p>
 	</article>
 	<nav class="pagination">
 		{current.nextSlug && <a href={postUrl(current.nextSlug)} rel="next">← {current.nextTitle}</a>}
@@ -188,15 +185,6 @@ const categories = await getCategoryList();
 			position: sticky;
 			top: 6rem;
 		}
-	}
-
-	.license-box {
-		border: 1px dashed var(--line);
-		border-radius: 0.9rem;
-		padding: 0.9rem 1.2rem;
-		color: var(--text-muted);
-		font-size: 0.9rem;
-		margin: 1.5rem 0 0;
 	}
 
 	.pagination {
