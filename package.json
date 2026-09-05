@@ -9,12 +9,24 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "check": "astro check",
+    "test": "vitest",
+    "test:run": "vitest run"
   },
   "dependencies": {
-    "astro": "^7.3.1"
+    "@astrojs/sitemap": "^3.7.4",
+    "@expressive-code/plugin-collapsible-sections": "^0.44.2",
+    "@expressive-code/plugin-line-numbers": "^0.44.2",
+    "astro": "^7.3.1",
+    "satteri-expressive-code": "^0.1.24"
   },
   "allowScripts": {
     "esbuild": true
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.10",
+    "typescript": "^5.9.3",
+    "vitest": "^5.0.0"
   }
 }
