@@ -36,6 +36,7 @@ describe("github cards", () => {
 		expect(html).toContain("https://github.com/saicaca/fuwari");
 		expect(html).toContain("github-card");
 		expect(html).toContain("gc-titlebar");
+		expect(html).toContain("gc-titlebar-left");
 		expect(html).toContain("gc-avatar");
 		expect(html).toContain("gc-infobar");
 	});

@@ -32,6 +32,7 @@ interface RepoInfo {
 	license: string;
 	language: string;
 	avatar: string;
+	ok: boolean;
 }
 
 async function fetchRepo(repo: string): Promise<RepoInfo> {
@@ -46,6 +47,7 @@ async function fetchRepo(repo: string): Promise<RepoInfo> {
 		license: "",
 		language: "",
 		avatar: `https://github.com/${owner}.png`,
+		ok: false,
 	};
 	try {
 		const headers: Record<string, string> = {
@@ -70,6 +72,7 @@ async function fetchRepo(repo: string): Promise<RepoInfo> {
 			license: data.license?.spdx_id ?? "",
 			language: data.language ?? "",
 			avatar: data.owner?.avatar_url ?? fallback.avatar,
+			ok: true,
 		};
 	} catch {
 		return fallback;
@@ -92,16 +95,23 @@ export function githubLoader(contentDir: string): Loader {
 				) {
 					return;
 				}
-				meta.set("repos-digest", digest);
 				store.clear();
 				if (repos.length === 0) return;
 				logger.info(`Fetching ${repos.length} GitHub repositor${repos.length === 1 ? "y" : "ies"}`);
 				const infos = await Promise.all(repos.map(fetchRepo));
+				const failed = infos.filter((info) => !info.ok).map((info) => info.repo);
+				if (failed.length > 0) {
+					logger.warn(`Using placeholders for unreachable repositor${failed.length === 1 ? "y" : "ies"}: ${failed.join(", ")}`);
+				}
 				const cache: Record<string, RepoInfo> = {};
 				for (const info of infos) {
-					const data = await parseData({ id: info.repo, data: { ...info } });
-					store.set({ id: info.repo, data });
+					const { ok: _ok, ...data } = info;
+					const parsed = await parseData({ id: info.repo, data: { ...data } });
+					store.set({ id: info.repo, data: parsed });
 					cache[info.repo] = info;
+				}
+				if (failed.length === 0) {
+					meta.set("repos-digest", digest);
 				}
 				const serialized = JSON.stringify(cache);
 				let previous: string | null = null;

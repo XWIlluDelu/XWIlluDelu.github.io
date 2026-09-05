@@ -91,16 +91,21 @@ export const directivesPlugin = defineMdastPlugin({
 			type: "emphasis",
 			children: [withProps(avatar, ["gc-avatar"]), { type: "text", value: repo.owner }],
 		};
-		const titlebar: Emphasis = {
+		const name: Strong = {
+			type: "strong",
+			children: [{ type: "text", value: repo.name }],
+		};
+		const left: Emphasis = {
 			type: "emphasis",
 			children: [
 				withProps(owner, ["gc-owner"], undefined, "span"),
 				{ type: "text", value: " / " },
-				{
-					type: "strong",
-					children: [{ type: "text", value: repo.name }],
-				},
+				name,
 			],
+		};
+		const titlebar: Emphasis = {
+			type: "emphasis",
+			children: [withProps(left, ["gc-titlebar-left"], undefined, "span")],
 		};
 		const description: Emphasis = {
 			type: "emphasis",
