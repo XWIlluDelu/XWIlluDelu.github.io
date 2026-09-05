@@ -6,6 +6,7 @@ import { computeReadingStats } from "@/lib/reading";
 import { categoryUrl, postUrl, tagUrl } from "@/lib/urls";
 import Icon from "../../components/Icon.astro";
 import Markdown from "../../components/Markdown.astro";
+import Banner from "../../components/Banner.astro";
 import Sidebar from "../../components/Sidebar.astro";
 import TOC from "../../components/TOC.astro";
 import Base from "../../layouts/Base.astro";
@@ -27,6 +28,7 @@ const categories = await getCategoryList();
 ---
 
 <Base title={data.title} description={data.description}>
+	<Banner />
 	<div class="layout">
 		<Sidebar tags={tags} categories={categories} />
 		<div>
@@ -128,12 +130,12 @@ const categories = await getCategoryList();
 		display: inline-flex;
 		align-items: center;
 		justify-content: center;
-		width: 1.9rem;
-		height: 1.9rem;
+		width: 2rem;
+		height: 2rem;
 		border-radius: 0.55rem;
 		background: var(--btn-bg);
 		color: var(--primary);
-		font-size: 1.15rem;
+		font-size: 1.25rem;
 	}
 
 	.post-meta a {

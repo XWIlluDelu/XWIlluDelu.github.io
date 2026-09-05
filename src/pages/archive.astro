@@ -1,9 +1,13 @@
 ---
 import Base from "../layouts/Base.astro";
-import { getSortedPosts, groupPostsByYear } from "@/lib/content";
+import Banner from "../components/Banner.astro";
+import Sidebar from "../components/Sidebar.astro";
+import { getCategoryList, getSortedPosts, getTagList, groupPostsByYear } from "@/lib/content";
 import { postUrl } from "@/lib/urls";
 
 const groups = groupPostsByYear(await getSortedPosts());
+const tags = await getTagList();
+const categories = await getCategoryList();
 const formatDay = (date: Date) => {
 	const month = String(date.getMonth() + 1).padStart(2, "0");
 	const day = String(date.getDate()).padStart(2, "0");
@@ -12,8 +16,12 @@ const formatDay = (date: Date) => {
 ---
 
 <Base title="Archive" description="All posts by year">
-	<h1>Archive</h1>
-	<p class="archive-filter" id="archive-filter" hidden></p>
+	<Banner />
+	<div class="layout">
+		<Sidebar tags={tags} categories={categories} />
+		<div>
+			<h1>Archive</h1>
+			<p class="archive-filter" id="archive-filter" hidden></p>
 	{
 		groups.map((g) => (
 			<section class="card archive-group" data-year={g.year}>
@@ -43,6 +51,8 @@ const formatDay = (date: Date) => {
 		))
 	}
 	<p class="archive-empty" id="archive-empty" hidden>No posts match this filter.</p>
+		</div>
+	</div>
 </Base>
 
 <script>

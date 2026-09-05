@@ -20,7 +20,7 @@ const categories = await getCategoryList();
 const pageUrl = (p: number) => (p === 1 ? "/" : `/${p}/`);
 ---
 
-<Base title="Home" overlap>
+<Base title="Home">
 	<Banner />
 	<div class="layout">
 		<Sidebar tags={tags} categories={categories} />
