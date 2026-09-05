@@ -4,6 +4,11 @@ export interface PostMeta {
 	published: Date;
 }
 
+export function slugFromId(id: string): string {
+	const withoutExt = id.replace(/\.mdx?$/, "");
+	return withoutExt.replace(/(^|\/)index$/, "").replace(/\/$/, "") || withoutExt;
+} 
+
 export function sortPostsByPublishedDesc<T extends PostMeta>(posts: T[]): T[] {
 	return [...posts].sort((a, b) => b.published.getTime() - a.published.getTime());
 }

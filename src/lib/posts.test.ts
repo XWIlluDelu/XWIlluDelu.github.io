@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { attachPrevNext, sortPostsByPublishedDesc } from "./posts";
+import { attachPrevNext, slugFromId, sortPostsByPublishedDesc } from "./posts";
 import type { PostMeta } from "./posts";
 
 function meta(slug: string, published: string, title = slug): PostMeta {
@@ -12,6 +12,13 @@ describe("sortPostsByPublishedDesc", () => {
 		const sorted = sortPostsByPublishedDesc(input);
 		expect(sorted.map((p) => p.slug)).toEqual(["new", "old"]);
 		expect(input[0].slug).toBe("old");
+	});
+});
+
+describe("slugFromId", () => {
+	test("strips the extension and collapses trailing index", () => {
+		expect(slugFromId("hello-world.md")).toBe("hello-world");
+		expect(slugFromId("guide/index.md")).toBe("guide");
 	});
 });
 
