@@ -1,0 +1,49 @@
+---
+import type { GetStaticPaths } from "astro";
+import { getCategoryList, getSortedPosts, getTagList } from "@/lib/content";
+import { computeReadingStats } from "@/lib/reading";
+import { postUrl } from "@/lib/urls";
+import Banner from "../components/Banner.astro";
+import Pagination from "../components/Pagination.astro";
+import PostCard from "../components/PostCard.astro";
+import Sidebar from "../components/Sidebar.astro";
+import Base from "../layouts/Base.astro";
+
+export const getStaticPaths = (async ({ paginate }) => {
+  const posts = await getSortedPosts();
+  return paginate(posts, { pageSize: 8 });
+}) satisfies GetStaticPaths;
+
+const { page } = Astro.props;
+const tags = await getTagList();
+const categories = await getCategoryList();
+const pageUrl = (p: number) => (p === 1 ? "/" : `/${p}/`);
+---
+
+<Base title="Home">
+	<Banner />
+	<div class="layout">
+		<Sidebar tags={tags} categories={categories} />
+		<main>
+			{
+				page.data.map((item) => {
+					const stats = computeReadingStats(item.entry.body ?? "");
+					return (
+						<PostCard
+							title={item.title}
+							url={postUrl(item.slug)}
+							published={item.published}
+							tags={item.entry.data.tags}
+							category={item.entry.data.category}
+							description={item.entry.data.description}
+							image={item.entry.data.image || undefined}
+							words={stats.words}
+							minutes={stats.minutes}
+						/>
+					);
+				})
+			}
+			<Pagination currentPage={page.currentPage} lastPage={page.lastPage} pageUrl={pageUrl} />
+		</main>
+	</div>
+</Base>

@@ -1,0 +1,57 @@
+:root {
+  --hue: 250;
+  --radius: 1.25rem;
+  --page-width: 75rem;
+  --sidebar-width: 17.5rem;
+
+  --primary: oklch(0.6 0.14 var(--hue));
+  --page-bg: oklch(0.94 0.012 var(--hue));
+  --card-bg: #ffffff;
+  --text: oklch(0.25 0.02 var(--hue));
+  --text-muted: oklch(0.45 0.02 var(--hue));
+  --line: oklch(0.88 0.015 var(--hue));
+  --btn-bg: oklch(0.94 0.02 var(--hue));
+  --btn-bg-hover: oklch(0.9 0.04 var(--hue));
+  --enter-bg: oklch(0.93 0.03 var(--hue));
+  --code-bg: oklch(0.25 0.02 var(--hue));
+  --selection: oklch(0.88 0.05 var(--hue));
+  --shadow: 0 2px 16px rgb(30 27 75 / 0.07);
+}
+
+/* Shared surface and grid primitives (global by design). */
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 1.5rem 1.75rem;
+  transition: background 0.2s;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+@media (min-width: 64rem) {
+  .layout {
+    grid-template-columns: var(--sidebar-width) 1fr;
+    align-items: start;
+  }
+}
+
+:root[data-theme="dark"] {
+  --primary: oklch(0.78 0.12 var(--hue));
+  --page-bg: oklch(0.18 0.014 var(--hue));
+  --card-bg: oklch(0.24 0.015 var(--hue));
+  --text: oklch(0.92 0.01 var(--hue));
+  --text-muted: oklch(0.7 0.02 var(--hue));
+  --line: oklch(0.32 0.02 var(--hue));
+  --btn-bg: oklch(0.3 0.03 var(--hue));
+  --btn-bg-hover: oklch(0.35 0.035 var(--hue));
+  --enter-bg: oklch(0.28 0.03 var(--hue));
+  --selection: oklch(0.4 0.08 var(--hue));
+  --shadow: 0 2px 16px rgb(0 0 0 / 0.35);
+}

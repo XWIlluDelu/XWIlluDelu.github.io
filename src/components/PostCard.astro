@@ -1,0 +1,206 @@
+---
+import { formatDateToYYYYMMDD } from "@/lib/dates";
+import { categoryUrl, tagUrl } from "@/lib/urls";
+import Icon from "./Icon.astro";
+
+interface Props {
+  title: string;
+  url: string;
+  published: Date;
+  tags: string[];
+  category: string;
+  description: string;
+  image?: string;
+  words: number;
+  minutes: number;
+}
+
+const { title, url, published, tags, category, description, image, words, minutes } = Astro.props;
+---
+
+<article class:list={["card", "post-card", { "has-cover": image }]}>
+	<div class="post-body">
+		<h2><a href={url}>{title}</a></h2>
+		<div class="post-meta">
+			<span class="meta">
+				<span class="meta-icon"><Icon name="calendar" /></span>
+				<time datetime={published.toISOString()}>{formatDateToYYYYMMDD(published)}</time>
+			</span>
+			{category && (
+				<span class="meta">
+					<span class="meta-icon"><Icon name="book" /></span>
+					<a href={categoryUrl(category)}>{category}</a>
+				</span>
+			)}
+			{tags.length > 0 && (
+				<span class="meta">
+					<span class="meta-icon"><Icon name="tag" /></span>
+					{tags.map((tag, i) => (
+						<>
+							{i > 0 && <span class="tag-sep">/</span>}
+							<a href={tagUrl(tag)}>{tag}</a>
+						</>
+					))}
+				</span>
+			)}
+		</div>
+		<p class="post-desc">{description}</p>
+		<p class="post-words">
+			{words} {words === 1 ? "word" : "words"} · {minutes} {minutes === 1 ? "minute" : "minutes"}
+		</p>
+	</div>
+	{image && (
+		<a class="post-thumb" href={url} aria-label={title} tabindex="-1">
+			<img src={image} alt="" loading="lazy" />
+		</a>
+	)}
+	<a class="post-enter" href={url} aria-label={`Read ${title}`}>
+		<Icon name="chevron-right" />
+	</a>
+</article>
+
+<style>
+	.post-card {
+		position: relative;
+		display: grid;
+		grid-template-columns: 1fr;
+		gap: 1rem;
+	}
+
+	.post-card + .post-card {
+		margin-top: 1rem;
+	}
+
+	.post-card h2 {
+		position: relative;
+		margin: 0 0 0.7rem;
+		font-size: 1.65rem;
+		line-height: 1.3;
+		padding-left: 0.9rem;
+	}
+
+	.post-card h2::before {
+		content: "";
+		position: absolute;
+		left: 0;
+		top: 0.35rem;
+		bottom: 0.35rem;
+		width: 0.25rem;
+		border-radius: 999px;
+		background: var(--primary);
+	}
+
+	.post-card h2 a {
+		color: var(--text);
+		text-decoration: none;
+	}
+
+	.post-card h2 a:hover {
+		color: var(--primary);
+	}
+
+	.post-meta {
+		color: var(--text-muted);
+		font-size: 0.875rem;
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 0.5rem 1rem;
+		margin-bottom: 0.7rem;
+	}
+
+	.meta {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.5rem;
+		font-weight: 600;
+	}
+
+	.meta-icon {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 1.9rem;
+		height: 1.9rem;
+		border-radius: 0.55rem;
+		background: var(--btn-bg);
+		color: var(--primary);
+		font-size: 1.15rem;
+	}
+
+	.post-meta a {
+		color: var(--text-muted);
+		text-decoration: none;
+	}
+
+	.post-meta a:hover {
+		color: var(--primary);
+	}
+
+	.tag-sep {
+		opacity: 0.5;
+		margin: 0 0.1rem;
+	}
+
+	.post-desc {
+		margin: 0 0 0.6rem;
+	}
+
+	.post-words {
+		color: var(--text-muted);
+		font-size: 0.875rem;
+		margin: 0;
+	}
+
+	.post-thumb {
+		display: block;
+		border-radius: 0.9rem;
+		overflow: hidden;
+	}
+
+	.post-thumb img {
+		display: block;
+		width: 100%;
+		height: 100%;
+		max-height: 14rem;
+		object-fit: cover;
+	}
+
+	.post-enter {
+		position: absolute;
+		right: 0.9rem;
+		top: 0.9rem;
+		bottom: 0.9rem;
+		width: 3.25rem;
+		border-radius: 0.9rem;
+		background: var(--enter-bg);
+		color: var(--primary);
+		display: none;
+		align-items: center;
+		justify-content: center;
+		text-decoration: none;
+		font-size: 2rem;
+	}
+
+	.post-enter:hover {
+		filter: brightness(0.96);
+	}
+
+	@media (min-width: 48rem) {
+		.post-card.has-cover {
+			grid-template-columns: 1fr 28%;
+		}
+
+		.post-card:not(.has-cover) {
+			padding-right: 5.5rem;
+		}
+
+		.post-thumb img {
+			max-height: none;
+		}
+
+		.post-enter {
+			display: inline-flex;
+		}
+	}
+</style>

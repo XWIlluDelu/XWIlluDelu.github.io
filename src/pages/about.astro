@@ -1,0 +1,30 @@
+---
+import Base from "../layouts/Base.astro";
+---
+
+<Base title="About" description="About this blog">
+	<article class="card about">
+		<h1>About</h1>
+		<img class="profile-avatar" src="/images/demo-avatar.png" alt="" loading="lazy" />
+		<p><strong>Your Name</strong></p>
+		<p>A short bio.</p>
+	</article>
+</Base>
+
+<style>
+	.about {
+		text-align: center;
+	}
+
+	.about h1 {
+		margin: 0 0 1rem;
+	}
+
+	.profile-avatar {
+		width: 100%;
+		max-width: 10rem;
+		aspect-ratio: 1;
+		object-fit: cover;
+		border-radius: 1rem;
+	}
+</style>

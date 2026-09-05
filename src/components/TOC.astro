@@ -1,0 +1,73 @@
+---
+import type { MarkdownHeading } from "astro";
+
+interface Props {
+  headings: MarkdownHeading[];
+}
+
+const { headings } = Astro.props;
+const maxDepth = 2;
+const minDepth = headings.length > 0 ? Math.min(...headings.map((h) => h.depth)) : 0;
+const items = headings.filter((h) => h.depth < minDepth + maxDepth);
+---
+
+{
+	items.length > 0 && (
+		<nav class="toc card" aria-label="Table of contents">
+			<p class="widget-title">Contents</p>
+			<ul>
+				{items.map((h) => (
+					<li class={`toc-depth-${h.depth - minDepth + 1}`}>
+						<a href={`#${h.slug}`}>{h.text}</a>
+					</li>
+				))}
+			</ul>
+		</nav>
+	)
+}
+
+<style>
+	.toc {
+		font-size: 0.9rem;
+	}
+
+	.toc ul {
+		list-style: none;
+		margin: 0.4rem 0;
+		padding: 0;
+	}
+
+	.toc li {
+		margin: 0.25rem 0;
+	}
+
+	.toc a {
+		color: var(--text-muted);
+		text-decoration: none;
+	}
+
+	.toc a:hover {
+		color: var(--primary);
+	}
+
+	.toc .toc-depth-3 {
+		padding-left: 1rem;
+	}
+
+	.widget-title {
+		display: flex;
+		align-items: center;
+		gap: 0.6rem;
+		font-weight: 800;
+		margin: 0 0 0.8rem;
+		font-size: 1.05rem;
+	}
+
+	.widget-title::before {
+		content: "";
+		width: 0.25rem;
+		height: 1.1rem;
+		border-radius: 999px;
+		background: var(--primary);
+	}
+</style>

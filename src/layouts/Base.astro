@@ -1,0 +1,236 @@
+---
+import { ClientRouter } from "astro:transitions";
+import Icon from "../components/Icon.astro";
+import "../styles/tokens.css";
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const { title, description = "A minimal Astro blog template" } = Astro.props;
+const pageTitle = title ? `${title} - Huwari` : "Huwari - A minimal Astro blog template";
+---
+
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width" />
+		<meta name="generator" content={Astro.generator} />
+		<meta name="description" content={description} />
+		<title>{pageTitle}</title>
+		<link rel="icon" href="/favicon/favicon-light-32.png" sizes="32x32" media="(prefers-color-scheme: light)" />
+		<link rel="icon" href="/favicon/favicon-dark-32.png" sizes="32x32" media="(prefers-color-scheme: dark)" />
+		<link rel="icon" href="/favicon/favicon-light-192.png" sizes="192x192" media="(prefers-color-scheme: light)" />
+		<link rel="icon" href="/favicon/favicon-dark-192.png" sizes="192x192" media="(prefers-color-scheme: dark)" />
+		<ClientRouter />
+		<script is:inline>
+			try {
+				const stored = localStorage.getItem("huwari-theme");
+				const theme =
+					stored === "light" || stored === "dark"
+						? stored
+						: window.matchMedia("(prefers-color-scheme: dark)").matches
+							? "dark"
+							: "light";
+				document.documentElement.dataset.theme = theme;
+			} catch {
+			}
+		</script>
+		<slot name="head" />
+	</head>
+	<body>
+		<header class="navbar">
+			<div class="navbar-inner">
+				<a class="brand" href="/">
+					<span class="brand-icon"><Icon name="home" /></span>
+					Huwari
+				</a>
+				<nav class="nav-links" aria-label="Primary">
+					<a href="/">Home</a>
+					<a href="/archive/">Archive</a>
+					<a href="/about/">About</a>
+					<button class="theme-toggle" id="theme-toggle" type="button" aria-label="Toggle theme">
+						<span class="icon-sun"><Icon name="sun" /></span>
+						<span class="icon-moon"><Icon name="moon" /></span>
+					</button>
+				</nav>
+			</div>
+		</header>
+		<div class="page">
+			<div class="onload">
+				<slot />
+			</div>
+			<footer class="footer">
+				© {new Date().getFullYear()} Huwari · <a href="/rss.xml">RSS</a> ·{" "}
+				<a href="/sitemap-index.xml">Sitemap</a>
+			</footer>
+		</div>
+		<script>
+			import { initTheme, theme } from "../stores/theme";
+			import { initGithubCards } from "../scripts/github-cards";
+
+			theme.set(document.documentElement.dataset.theme === "dark" ? "dark" : "light");
+			initTheme();
+			initGithubCards();
+		</script>
+	</body>
+</html>
+
+<style>
+	*,
+	*::before,
+	*::after {
+		box-sizing: border-box;
+	}
+
+	html {
+		background: var(--page-bg);
+		color: var(--text);
+		font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+		line-height: 1.7;
+		transition: background 0.2s, color 0.2s;
+	}
+
+	body {
+		margin: 0;
+	}
+
+	::selection {
+		background: var(--selection);
+	}
+
+	a {
+		color: var(--primary);
+	}
+
+	img {
+		max-width: 100%;
+		height: auto;
+	}
+
+	@keyframes fade-in-up {
+		from {
+			transform: translateY(1.5rem);
+			opacity: 0;
+		}
+		to {
+			transform: translateY(0);
+			opacity: 1;
+		}
+	}
+
+	.onload {
+		animation: 300ms fade-in-up;
+		animation-fill-mode: backwards;
+	}
+
+	.navbar {
+		position: sticky;
+		top: 0.75rem;
+		z-index: 50;
+		max-width: var(--page-width);
+		margin: 0.75rem auto 0;
+		padding: 0 1rem;
+		pointer-events: none;
+	}
+
+	.navbar-inner {
+		pointer-events: auto;
+		background: var(--card-bg);
+		border: 1px solid var(--line);
+		border-radius: var(--radius);
+		box-shadow: var(--shadow);
+		height: 4.25rem;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 1rem;
+		padding: 0 0.75rem 0 1.25rem;
+	}
+
+	.brand {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.5rem;
+		font-weight: 800;
+		font-size: 1.2rem;
+		color: var(--primary);
+		text-decoration: none;
+	}
+
+	.brand-icon {
+		font-size: 1.6rem;
+		display: inline-flex;
+	}
+
+	.nav-links {
+		display: flex;
+		align-items: center;
+		gap: 0.25rem;
+	}
+
+	.nav-links a {
+		color: var(--text);
+		text-decoration: none;
+		font-weight: 700;
+		padding: 0.55rem 1rem;
+		border-radius: 0.7rem;
+	}
+
+	.nav-links a:hover {
+		background: var(--btn-bg-hover);
+		color: var(--primary);
+	}
+
+	.theme-toggle {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		border: 1px solid transparent;
+		background: transparent;
+		color: var(--text);
+		border-radius: 0.7rem;
+		width: 2.75rem;
+		height: 2.75rem;
+		font-size: 1.3rem;
+		cursor: pointer;
+	}
+
+	.theme-toggle:hover {
+		background: var(--btn-bg-hover);
+		color: var(--primary);
+	}
+
+	.icon-moon {
+		display: none;
+	}
+
+	:global(:root[data-theme="dark"]) .icon-sun {
+		display: none;
+	}
+
+	:global(:root[data-theme="dark"]) .icon-moon {
+		display: block;
+	}
+
+	.page {
+		max-width: var(--page-width);
+		margin: -3.5rem auto 0;
+		padding: 0 1rem 4rem;
+		position: relative;
+		z-index: 1;
+	}
+
+	.footer {
+		margin-top: 2.5rem;
+		border: 1px dashed var(--line);
+		border-radius: var(--radius);
+		background: var(--card-bg);
+		padding: 1.75rem 1rem;
+		color: var(--text-muted);
+		font-size: 0.875rem;
+		text-align: center;
+	}
+</style>

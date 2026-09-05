@@ -1,0 +1,83 @@
+---
+import { getSortedPosts, groupPostsByYear } from "@/lib/content";
+import { formatDateToYYYYMMDD } from "@/lib/dates";
+import { postUrl } from "@/lib/urls";
+import Base from "../layouts/Base.astro";
+
+const groups = groupPostsByYear(await getSortedPosts());
+---
+
+<Base title="Archive" description="All posts by year">
+	<h1>Archive</h1>
+	{
+		groups.map((g) => (
+			<section class="card archive-group">
+				<h2 class="archive-year">
+					{g.year} ({g.posts.length})
+				</h2>
+				<ul class="archive-list">
+					{g.posts.map((p) => (
+						<li>
+							<time class="archive-date">{formatDateToYYYYMMDD(p.published)}</time>
+							<a href={postUrl(p.slug)}>{p.title}</a>
+						</li>
+					))}
+				</ul>
+			</section>
+		))
+	}
+</Base>
+
+<style>
+	h1 {
+		margin: 0 0 1rem;
+		font-size: 2rem;
+	}
+
+	.archive-group + .archive-group {
+		margin-top: 1rem;
+	}
+
+	.archive-year {
+		margin: 0 0 0.6rem;
+		font-size: 1.5rem;
+	}
+
+	.archive-list {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+	}
+
+	.archive-list li {
+		display: flex;
+		align-items: baseline;
+		gap: 0.9rem;
+		padding: 0.45rem 0.2rem;
+		border-radius: 0.6rem;
+	}
+
+	.archive-list li:hover {
+		background: var(--btn-bg);
+	}
+
+	.archive-date {
+		color: var(--text-muted);
+		font-size: 0.875rem;
+		min-width: 4.2rem;
+		text-align: right;
+	}
+
+	.archive-list a {
+		color: var(--text);
+		font-weight: 700;
+		text-decoration: none;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+
+	.archive-list a:hover {
+		color: var(--primary);
+	}
+</style>

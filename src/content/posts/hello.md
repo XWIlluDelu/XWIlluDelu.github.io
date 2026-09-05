@@ -2,6 +2,7 @@
 title: Hello Huwari
 published: 2024-04-01
 description: "A minimal first post for the Huwari template."
+image: "/images/cover.jpeg"
 tags: ["Huwari", "Meta"]
 category: Guides
 draft: false

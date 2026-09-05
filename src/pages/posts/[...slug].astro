@@ -1,0 +1,312 @@
+---
+import { render } from "astro:content";
+import { getPostsWithNav, getSortedPosts } from "@/lib/content";
+import { formatDateToYYYYMMDD } from "@/lib/dates";
+import { computeReadingStats } from "@/lib/reading";
+import { categoryUrl, postUrl, tagUrl } from "@/lib/urls";
+import Icon from "../../components/Icon.astro";
+import TOC from "../../components/TOC.astro";
+import Base from "../../layouts/Base.astro";
+
+export async function getStaticPaths() {
+  const posts = await getSortedPosts();
+  return posts.map((item) => ({ params: { slug: item.slug }, props: { slug: item.slug } }));
+}
+
+const { slug } = Astro.props as { slug: string };
+const withNav = await getPostsWithNav();
+const current = withNav.find((p) => p.slug === slug);
+if (!current) throw new Error(`Post not found: ${slug}`);
+const { Content, headings } = await render(current.entry);
+const stats = computeReadingStats(current.entry.body ?? "");
+const data = current.entry.data;
+---
+
+<Base title={data.title} description={data.description}>
+	<article class="card">
+		<h1 class="article-title">{data.title}</h1>
+		<div class="post-meta">
+			<span class="meta">
+				<span class="meta-icon"><Icon name="calendar" /></span>
+				<time datetime={data.published.toISOString()}>{formatDateToYYYYMMDD(data.published)}</time>
+			</span>
+			{data.category && (
+				<span class="meta">
+					<span class="meta-icon"><Icon name="book" /></span>
+					<a href={categoryUrl(data.category)}>{data.category}</a>
+				</span>
+			)}
+			{data.tags.length > 0 && (
+				<span class="meta">
+					<span class="meta-icon"><Icon name="tag" /></span>
+					{data.tags.map((tag, i) => (
+						<>
+							{i > 0 && <span class="tag-sep">/</span>}
+							<a href={tagUrl(tag)}>{tag}</a>
+						</>
+					))}
+				</span>
+			)}
+			<span class="meta">
+				{stats.words} {stats.words === 1 ? "word" : "words"} · {stats.minutes}{" "}
+				{stats.minutes === 1 ? "minute" : "minutes"}
+			</span>
+		</div>
+		{data.image && <img class="post-cover" src={data.image} alt="" loading="lazy" />}
+		<div class="layout">
+			<div class="markdown">
+				<Content />
+			</div>
+			<TOC headings={headings} />
+		</div>
+		<p class="license-box">
+			License: <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a>
+		</p>
+	</article>
+	<nav class="pagination">
+		{current.nextSlug && <a href={postUrl(current.nextSlug)} rel="next">← {current.nextTitle}</a>}
+		{current.prevSlug && <a href={postUrl(current.prevSlug)} rel="prev">{current.prevTitle} →</a>}
+	</nav>
+</Base>
+
+<style>
+	.article-title {
+		position: relative;
+		margin: 0 0 0.8rem;
+		font-size: 2.1rem;
+		line-height: 1.25;
+		padding-left: 1rem;
+	}
+
+	.article-title::before {
+		content: "";
+		position: absolute;
+		left: 0;
+		top: 0.45rem;
+		bottom: 0.45rem;
+		width: 0.3rem;
+		border-radius: 999px;
+		background: var(--primary);
+	}
+
+	.post-meta {
+		color: var(--text-muted);
+		font-size: 0.875rem;
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 0.5rem 1rem;
+		margin-bottom: 0.7rem;
+	}
+
+	.meta {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.5rem;
+		font-weight: 600;
+	}
+
+	.meta-icon {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 1.9rem;
+		height: 1.9rem;
+		border-radius: 0.55rem;
+		background: var(--btn-bg);
+		color: var(--primary);
+		font-size: 1.15rem;
+	}
+
+	.post-meta a {
+		color: var(--text-muted);
+		text-decoration: none;
+	}
+
+	.post-meta a:hover {
+		color: var(--primary);
+	}
+
+	.tag-sep {
+		opacity: 0.5;
+		margin: 0 0.1rem;
+	}
+
+	.post-cover {
+		border-radius: 0.9rem;
+		margin-bottom: 0.9rem;
+		width: 100%;
+		max-height: 24rem;
+		object-fit: cover;
+	}
+
+	.license-box {
+		border: 1px dashed var(--line);
+		border-radius: 0.9rem;
+		padding: 0.9rem 1.2rem;
+		color: var(--text-muted);
+		font-size: 0.9rem;
+		margin: 1.5rem 0 0;
+	}
+
+	.pagination {
+		display: flex;
+		gap: 0.5rem;
+		justify-content: center;
+		margin-top: 1.5rem;
+		flex-wrap: wrap;
+	}
+
+	.pagination a {
+		display: inline-flex;
+		align-items: center;
+		border-radius: 0.8rem;
+		background: var(--card-bg);
+		border: 1px solid var(--line);
+		color: var(--text);
+		text-decoration: none;
+		font-weight: 700;
+		padding: 0.7rem 1.1rem;
+		box-shadow: var(--shadow);
+		max-width: 100%;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+
+	.pagination a:hover {
+		border-color: var(--primary);
+		color: var(--primary);
+	}
+</style>
+
+<style is:global>
+	.markdown h1,
+	.markdown h2,
+	.markdown h3,
+	.markdown h4 {
+		line-height: 1.3;
+		margin: 1.8em 0 0.7em;
+	}
+
+	.markdown p,
+	.markdown ul,
+	.markdown ol,
+	.markdown blockquote,
+	.markdown pre,
+	.markdown table {
+		margin: 1em 0;
+	}
+
+	.markdown ul,
+	.markdown ol {
+		padding-left: 1.5rem;
+	}
+
+	.markdown li::marker {
+		color: var(--primary);
+	}
+
+	.markdown blockquote {
+		border-left: 0.25rem solid var(--btn-bg-hover);
+		margin-left: 0;
+		padding: 0.2rem 0 0.2rem 1rem;
+		color: var(--text-muted);
+	}
+
+	.markdown code:not(pre code) {
+		background: var(--btn-bg);
+		border-radius: 0.4rem;
+		padding: 0.1rem 0.35rem;
+		font-size: 0.875em;
+	}
+
+	.markdown table {
+		border-collapse: collapse;
+		width: 100%;
+		display: block;
+		overflow-x: auto;
+	}
+
+	.markdown th,
+	.markdown td {
+		border: 1px solid var(--line);
+		padding: 0.4rem 0.8rem;
+		text-align: left;
+	}
+
+	.markdown img {
+		border-radius: 0.75rem;
+	}
+
+	.markdown iframe {
+		border: 0;
+		border-radius: 0.75rem;
+		max-width: 100%;
+	}
+
+	.admonition {
+		border: 1px solid var(--line);
+		border-left: 0.3rem solid var(--primary);
+		border-radius: 0.75rem;
+		padding: 0.8rem 1.1rem;
+		background: var(--card-bg);
+	}
+
+	.admonition-title {
+		font-weight: 800;
+		margin: 0 0 0.3rem;
+	}
+
+	.admonition-note {
+		border-left-color: oklch(0.7 0.14 250);
+	}
+
+	.admonition-tip {
+		border-left-color: oklch(0.7 0.14 180);
+	}
+
+	.admonition-important {
+		border-left-color: oklch(0.7 0.14 310);
+	}
+
+	.admonition-warning {
+		border-left-color: oklch(0.7 0.14 60);
+	}
+
+	.admonition-caution {
+		border-left-color: oklch(0.6 0.2 25);
+	}
+
+	.github-card {
+		border: 1px solid var(--line);
+		border-radius: var(--radius);
+		padding: 1rem 1.25rem;
+		background: var(--card-bg);
+	}
+
+	.github-card-link {
+		font-weight: 800;
+		text-decoration: none;
+	}
+
+	.github-card-desc {
+		display: block;
+		color: var(--text-muted);
+		font-size: 0.9rem;
+		margin-top: 0.3rem;
+	}
+
+	.spoiler {
+		background: var(--text-muted);
+		color: transparent;
+		border-radius: 0.3rem;
+		padding: 0 0.3rem;
+		transition: color 0.15s, background 0.15s;
+	}
+
+	.spoiler:hover {
+		background: var(--btn-bg);
+		color: var(--text);
+	}
+</style>

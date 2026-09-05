@@ -1,5 +1,5 @@
 {
-  "name": "",
+  "name": "huwari",
   "type": "module",
   "version": "0.0.1",
   "engines": {
@@ -15,10 +15,13 @@
     "test:run": "vitest run"
   },
   "dependencies": {
+    "@astrojs/markdown-satteri": "^0.4.0",
+    "@astrojs/rss": "^4.0.19",
     "@astrojs/sitemap": "^3.7.4",
-    "@expressive-code/plugin-collapsible-sections": "^0.44.2",
-    "@expressive-code/plugin-line-numbers": "^0.44.2",
+    "@expressive-code/plugin-collapsible-sections": "^0.42.0",
+    "@expressive-code/plugin-line-numbers": "^0.42.0",
     "astro": "^7.3.1",
+    "nanostores": "^1.5.3",
     "satteri": "^0.10.5",
     "satteri-expressive-code": "^0.1.24"
   },
@@ -27,8 +30,9 @@
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.10",
+    "@biomejs/biome": "2.5.12",
     "@types/mdast": "^4.0.4",
-    "typescript": "^5.9.3",
+    "typescript": "^6.0.3",
     "vitest": "^5.0.0"
   }
 }

@@ -1,0 +1,64 @@
+---
+interface Props {
+  currentPage: number;
+  lastPage: number;
+  pageUrl: (page: number) => string;
+}
+
+const { currentPage, lastPage, pageUrl } = Astro.props;
+const pages = Array.from({ length: lastPage }, (_, i) => i + 1);
+---
+
+{
+	lastPage > 1 && (
+		<nav class="pagination" aria-label="Pagination">
+			{currentPage > 1 && <a href={pageUrl(currentPage - 1)} rel="prev">←</a>}
+			{pages.map((p) =>
+				p === currentPage ? (
+					<span class="current" aria-current="page">{p}</span>
+				) : (
+					<a href={pageUrl(p)}>{p}</a>
+				),
+			)}
+			{currentPage < lastPage && <a href={pageUrl(currentPage + 1)} rel="next">→</a>}
+		</nav>
+	)
+}
+
+<style>
+	.pagination {
+		display: flex;
+		gap: 0.5rem;
+		justify-content: center;
+		margin-top: 1.5rem;
+		flex-wrap: wrap;
+	}
+
+	.pagination a,
+	.pagination span {
+		min-width: 2.75rem;
+		height: 2.75rem;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		border-radius: 0.8rem;
+		background: var(--card-bg);
+		border: 1px solid var(--line);
+		color: var(--text);
+		text-decoration: none;
+		font-weight: 700;
+		padding: 0 0.7rem;
+		box-shadow: var(--shadow);
+	}
+
+	.pagination a:hover {
+		border-color: var(--primary);
+		color: var(--primary);
+	}
+
+	.pagination .current {
+		background: var(--primary);
+		border-color: var(--primary);
+		color: #fff;
+	}
+</style>
