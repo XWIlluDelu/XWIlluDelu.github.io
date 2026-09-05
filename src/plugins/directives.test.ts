@@ -31,11 +31,15 @@ describe("admonitions", () => {
 });
 
 describe("github cards", () => {
-  test("renders a link card for owner/name", async () => {
-    const html = await render('::github{repo="saicaca/fuwari"}');
-    expect(html).toContain("https://github.com/saicaca/fuwari");
-    expect(html).toContain("github-card");
-  });
+	test("renders a rich static shell for owner/name", async () => {
+		const html = await render('::github{repo="saicaca/fuwari"}');
+		expect(html).toContain("https://github.com/saicaca/fuwari");
+		expect(html).toContain("github-card");
+		expect(html).toContain("gc-titlebar");
+		expect(html).toContain("gc-avatar");
+		expect(html).toContain("gc-infobar");
+		expect(html).toContain("data-repo");
+	});
 
   test("drops malformed repos instead of linking", async () => {
     const html = await render('::github{repo="not-a-repo"}');

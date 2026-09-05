@@ -1,10 +1,12 @@
 ---
 import { render } from "astro:content";
-import { getPostsWithNav, getSortedPosts } from "@/lib/content";
+import { getCategoryList, getPostsWithNav, getSortedPosts, getTagList } from "@/lib/content";
 import { formatDateToYYYYMMDD } from "@/lib/dates";
 import { computeReadingStats } from "@/lib/reading";
 import { categoryUrl, postUrl, tagUrl } from "@/lib/urls";
 import Icon from "../../components/Icon.astro";
+import Markdown from "../../components/Markdown.astro";
+import Sidebar from "../../components/Sidebar.astro";
 import TOC from "../../components/TOC.astro";
 import Base from "../../layouts/Base.astro";
 
@@ -20,11 +22,26 @@ if (!current) throw new Error(`Post not found: ${slug}`);
 const { Content, headings } = await render(current.entry);
 const stats = computeReadingStats(current.entry.body ?? "");
 const data = current.entry.data;
+const tags = await getTagList();
+const categories = await getCategoryList();
 ---
 
 <Base title={data.title} description={data.description}>
-	<article class="card">
-		<h1 class="article-title">{data.title}</h1>
+	<div class="layout">
+		<Sidebar tags={tags} categories={categories} />
+		<div>
+			<article class="card">
+			<div class="post-meta">
+				<span class="meta">
+					<span class="meta-icon"><Icon name="calendar" /></span>
+					{stats.words} {stats.words === 1 ? "word" : "words"}
+				</span>
+				<span class="meta">
+					<span class="meta-icon"><Icon name="book" /></span>
+					{stats.minutes} {stats.minutes === 1 ? "minute" : "minutes"}
+				</span>
+			</div>
+			<h1 class="article-title">{data.title}</h1>
 		<div class="post-meta">
 			<span class="meta">
 				<span class="meta-icon"><Icon name="calendar" /></span>
@@ -47,17 +64,16 @@ const data = current.entry.data;
 					))}
 				</span>
 			)}
-			<span class="meta">
-				{stats.words} {stats.words === 1 ? "word" : "words"} · {stats.minutes}{" "}
-				{stats.minutes === 1 ? "minute" : "minutes"}
-			</span>
-		</div>
-		{data.image && <img class="post-cover" src={data.image} alt="" loading="lazy" />}
-		<div class="layout">
-			<div class="markdown">
-				<Content />
 			</div>
-			<TOC headings={headings} />
+		<div class="post-divider"></div>
+		{data.image && <img class="post-cover" src={data.image} alt="" loading="lazy" />}
+		<div class="post-grid">
+			<Markdown>
+				<Content />
+			</Markdown>
+			<div class="toc-side">
+				<TOC headings={headings} />
+			</div>
 		</div>
 		<p class="license-box">
 			License: <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a>
@@ -67,6 +83,8 @@ const data = current.entry.data;
 		{current.nextSlug && <a href={postUrl(current.nextSlug)} rel="next">← {current.nextTitle}</a>}
 		{current.prevSlug && <a href={postUrl(current.prevSlug)} rel="prev">{current.prevTitle} →</a>}
 	</nav>
+		</div>
+	</div>
 </Base>
 
 <style>
@@ -140,6 +158,36 @@ const data = current.entry.data;
 		object-fit: cover;
 	}
 
+	.post-divider {
+		border-bottom: 1px dashed var(--line);
+		margin: 0.4rem 0 1.2rem;
+	}
+
+	.post-grid {
+		display: grid;
+		grid-template-columns: 1fr;
+		gap: 1rem;
+		min-width: 0;
+	}
+
+	.toc-side {
+		display: none;
+		min-width: 0;
+	}
+
+	@media (min-width: 110rem) {
+		.post-grid {
+			grid-template-columns: minmax(0, 1fr) 15rem;
+			align-items: start;
+		}
+
+		.toc-side {
+			display: block;
+			position: sticky;
+			top: 6rem;
+		}
+	}
+
 	.license-box {
 		border: 1px dashed var(--line);
 		border-radius: 0.9rem;
@@ -180,133 +228,4 @@ const data = current.entry.data;
 	}
 </style>
 
-<style is:global>
-	.markdown h1,
-	.markdown h2,
-	.markdown h3,
-	.markdown h4 {
-		line-height: 1.3;
-		margin: 1.8em 0 0.7em;
-	}
 
-	.markdown p,
-	.markdown ul,
-	.markdown ol,
-	.markdown blockquote,
-	.markdown pre,
-	.markdown table {
-		margin: 1em 0;
-	}
-
-	.markdown ul,
-	.markdown ol {
-		padding-left: 1.5rem;
-	}
-
-	.markdown li::marker {
-		color: var(--primary);
-	}
-
-	.markdown blockquote {
-		border-left: 0.25rem solid var(--btn-bg-hover);
-		margin-left: 0;
-		padding: 0.2rem 0 0.2rem 1rem;
-		color: var(--text-muted);
-	}
-
-	.markdown code:not(pre code) {
-		background: var(--btn-bg);
-		border-radius: 0.4rem;
-		padding: 0.1rem 0.35rem;
-		font-size: 0.875em;
-	}
-
-	.markdown table {
-		border-collapse: collapse;
-		width: 100%;
-		display: block;
-		overflow-x: auto;
-	}
-
-	.markdown th,
-	.markdown td {
-		border: 1px solid var(--line);
-		padding: 0.4rem 0.8rem;
-		text-align: left;
-	}
-
-	.markdown img {
-		border-radius: 0.75rem;
-	}
-
-	.markdown iframe {
-		border: 0;
-		border-radius: 0.75rem;
-		max-width: 100%;
-	}
-
-	.admonition {
-		border: 1px solid var(--line);
-		border-left: 0.3rem solid var(--primary);
-		border-radius: 0.75rem;
-		padding: 0.8rem 1.1rem;
-		background: var(--card-bg);
-	}
-
-	.admonition-title {
-		font-weight: 800;
-		margin: 0 0 0.3rem;
-	}
-
-	.admonition-note {
-		border-left-color: oklch(0.7 0.14 250);
-	}
-
-	.admonition-tip {
-		border-left-color: oklch(0.7 0.14 180);
-	}
-
-	.admonition-important {
-		border-left-color: oklch(0.7 0.14 310);
-	}
-
-	.admonition-warning {
-		border-left-color: oklch(0.7 0.14 60);
-	}
-
-	.admonition-caution {
-		border-left-color: oklch(0.6 0.2 25);
-	}
-
-	.github-card {
-		border: 1px solid var(--line);
-		border-radius: var(--radius);
-		padding: 1rem 1.25rem;
-		background: var(--card-bg);
-	}
-
-	.github-card-link {
-		font-weight: 800;
-		text-decoration: none;
-	}
-
-	.github-card-desc {
-		display: block;
-		color: var(--text-muted);
-		font-size: 0.9rem;
-		margin-top: 0.3rem;
-	}
-
-	.spoiler {
-		background: var(--text-muted);
-		color: transparent;
-		border-radius: 0.3rem;
-		padding: 0 0.3rem;
-		transition: color 0.15s, background 0.15s;
-	}
-
-	.spoiler:hover {
-		background: var(--btn-bg);
-		color: var(--text);
-	}
-</style>

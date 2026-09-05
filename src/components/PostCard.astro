@@ -54,9 +54,11 @@ const { title, url, published, tags, category, description, image, words, minute
 			<img src={image} alt="" loading="lazy" />
 		</a>
 	)}
-	<a class="post-enter" href={url} aria-label={`Read ${title}`}>
-		<Icon name="chevron-right" />
-	</a>
+	{!image && (
+		<a class="post-enter" href={url} aria-label={`Read ${title}`}>
+			<Icon name="chevron-right" />
+		</a>
+	)}
 </article>
 
 <style>
@@ -154,7 +156,7 @@ const { title, url, published, tags, category, description, image, words, minute
 
 	.post-thumb {
 		display: block;
-		border-radius: 0.9rem;
+		border-radius: 0.75rem;
 		overflow: hidden;
 	}
 
@@ -172,7 +174,7 @@ const { title, url, published, tags, category, description, image, words, minute
 		top: 0.9rem;
 		bottom: 0.9rem;
 		width: 3.25rem;
-		border-radius: 0.9rem;
+		border-radius: 0.75rem;
 		background: var(--enter-bg);
 		color: var(--primary);
 		display: none;
