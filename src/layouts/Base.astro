@@ -52,11 +52,21 @@ const pageTitle = title ? `${title} - Huwari` : "Huwari - A minimal Astro blog t
 					<a href="/">Home</a>
 					<a href="/archive/">Archive</a>
 					<a href="/about/">About</a>
+				</nav>
+				<div class="nav-actions">
 					<button class="theme-toggle" id="theme-toggle" type="button" aria-label="Toggle theme">
 						<span class="icon-sun"><Icon name="sun" /></span>
 						<span class="icon-moon"><Icon name="moon" /></span>
 					</button>
-				</nav>
+					<details class="nav-menu">
+						<summary aria-label="Menu"><Icon name="menu" /></summary>
+						<div class="nav-menu-panel card">
+							<a href="/">Home</a>
+							<a href="/archive/">Archive</a>
+							<a href="/about/">About</a>
+						</div>
+					</details>
+				</div>
 			</div>
 		</header>
 		<div class:list={["page", { "page-overlap": overlap }]}>
@@ -129,10 +139,10 @@ const pageTitle = title ? `${title} - Huwari` : "Huwari - A minimal Astro blog t
 
 	.navbar {
 		position: sticky;
-		top: 0.75rem;
+		top: 0;
 		z-index: 50;
 		max-width: var(--page-width);
-		margin: 0.75rem auto 0;
+		margin: 0 auto;
 		padding: 0 1rem;
 		pointer-events: none;
 	}
@@ -141,9 +151,10 @@ const pageTitle = title ? `${title} - Huwari` : "Huwari - A minimal Astro blog t
 		pointer-events: auto;
 		background: var(--card-bg);
 		border: 1px solid var(--line);
-		border-radius: var(--radius);
+		border-top: none;
+		border-radius: 0 0 var(--radius) var(--radius);
 		box-shadow: var(--shadow);
-		height: 4.25rem;
+		height: 4.5rem;
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
@@ -214,6 +225,71 @@ const pageTitle = title ? `${title} - Huwari` : "Huwari - A minimal Astro blog t
 
 	:global(:root[data-theme="dark"]) .icon-moon {
 		display: block;
+	}
+
+	.nav-actions {
+		display: flex;
+		align-items: center;
+		gap: 0.25rem;
+	}
+
+	.nav-menu {
+		display: none;
+		position: relative;
+		font-size: 1.3rem;
+	}
+
+	.nav-menu summary {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 2.75rem;
+		height: 2.75rem;
+		border-radius: 0.7rem;
+		cursor: pointer;
+		list-style: none;
+	}
+
+	.nav-menu summary::-webkit-details-marker {
+		display: none;
+	}
+
+	.nav-menu summary:hover {
+		background: var(--btn-bg-hover);
+		color: var(--primary);
+	}
+
+	.nav-menu-panel {
+		position: absolute;
+		right: 0;
+		top: calc(100% + 0.5rem);
+		min-width: 12rem;
+		padding: 0.5rem;
+		display: flex;
+		flex-direction: column;
+	}
+
+	.nav-menu-panel a {
+		color: var(--text);
+		text-decoration: none;
+		font-weight: 700;
+		padding: 0.6rem 0.9rem;
+		border-radius: 0.6rem;
+	}
+
+	.nav-menu-panel a:hover {
+		background: var(--btn-bg-hover);
+		color: var(--primary);
+	}
+
+	@media (max-width: 47.99rem) {
+		.nav-links {
+			display: none;
+		}
+
+		.nav-menu {
+			display: block;
+		}
 	}
 
 	.page {
