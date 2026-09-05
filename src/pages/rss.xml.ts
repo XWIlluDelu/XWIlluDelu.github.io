@@ -1,14 +1,17 @@
 import rss from "@astrojs/rss";
-import type { APIContext } from "astro";
+import { getEntry } from "astro:content";
 import { getSortedPosts } from "@/lib/content";
 import { postUrl } from "@/lib/urls";
+import type { APIContext } from "astro";
 
 export async function GET(context: APIContext) {
-  const posts = await getSortedPosts();
-  return rss({
-    title: "Huwari",
-    description: "A minimal Astro blog template",
-    site: context.site ?? "https://huwari.example.com/",
+	const site = await getEntry("site", "config");
+	if (!site) throw new Error("Site config not found");
+	const posts = await getSortedPosts();
+	return rss({
+		title: site.data.title,
+		description: site.data.subtitle,
+		site: context.site ?? "https://huwari.example.com/",
     items: posts.map((post) => ({
       title: post.title,
       pubDate: post.published,

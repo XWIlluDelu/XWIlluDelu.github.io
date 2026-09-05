@@ -1,0 +1,14 @@
+{
+  "title": "Huwari",
+  "subtitle": "A minimal Astro blog template",
+  "lang": "en",
+  "banner": {
+    "src": "/images/demo-banner.png"
+  },
+  "profile": {
+    "name": "Your Name",
+    "bio": "A short bio.",
+    "avatar": "/images/demo-avatar.png",
+    "links": [{ "name": "GitHub", "url": "https://github.com/" }]
+  }
+}

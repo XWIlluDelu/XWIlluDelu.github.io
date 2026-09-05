@@ -1,5 +1,6 @@
 ---
 import { ClientRouter } from "astro:transitions";
+import { getEntry } from "astro:content";
 import Icon from "../components/Icon.astro";
 import "../styles/tokens.css";
 
@@ -8,8 +9,11 @@ interface Props {
 	description?: string;
 }
 
-const { title, description = "A minimal Astro blog template" } = Astro.props;
-const pageTitle = title ? `${title} - Huwari` : "Huwari - A minimal Astro blog template";
+const { title, description } = Astro.props;
+const site = await getEntry("site", "config");
+if (!site) throw new Error("Site config not found");
+const pageTitle = title ? `${title} - ${site.data.title}` : `${site.data.title} - ${site.data.subtitle}`;
+const pageDescription = description ?? site.data.subtitle;
 ---
 
 <!DOCTYPE html>
@@ -41,11 +45,11 @@ const pageTitle = title ? `${title} - Huwari` : "Huwari - A minimal Astro blog t
 		<slot name="head" />
 	</head>
 	<body>
-		<header class="navbar" transition:persist>
+		<header class="navbar" transition:name="site-header">
 			<div class="navbar-inner">
 				<a class="brand" href="/">
 					<span class="brand-icon"><Icon name="home" /></span>
-					Huwari
+					{site.data.title}
 				</a>
 				<nav class="nav-links" aria-label="Primary">
 					<a href="/">Home</a>
@@ -73,17 +77,15 @@ const pageTitle = title ? `${title} - Huwari` : "Huwari - A minimal Astro blog t
 				<slot />
 			</div>
 			<footer class="footer">
-				© {new Date().getFullYear()} Huwari · <a href="/rss.xml">RSS</a> ·{" "}
+				© {new Date().getFullYear()} {site.data.title} · <a href="/rss.xml">RSS</a> ·{" "}
 				<a href="/sitemap-index.xml">Sitemap</a>
 			</footer>
 		</div>
 		<script>
 			import { initTheme, theme } from "../stores/theme";
-			import { initGithubCards } from "../scripts/github-cards";
 
 			theme.set(document.documentElement.dataset.theme === "dark" ? "dark" : "light");
 			initTheme();
-			initGithubCards();
 		</script>
 	</body>
 </html>

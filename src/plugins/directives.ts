@@ -1,6 +1,8 @@
 import type { Blockquote, Emphasis, Image, Link, Paragraph, Strong } from "mdast";
 import { defineMdastPlugin } from "satteri";
-import { admonitionTitle, isAdmonitionType, parseGithubRepo } from "@/lib/directives";
+import { admonitionTitle, compactNumber, isAdmonitionType, parseGithubRepo } from "@/lib/directives";
+import { readFileSync, statSync } from "node:fs";
+import { GITHUB_CACHE_PATH } from "@/loaders/github";
 
 /** mdast types omit hProperties, but the converter reads them at runtime. */
 function withProps<T extends object>(
@@ -16,9 +18,34 @@ function withProps<T extends object>(
 	return node;
 }
 
+interface CachedRepo {
+	description: string;
+	stars: number;
+	forks: number;
+	license: string;
+	language: string;
+	avatar: string;
+}
+
+let cacheMtime = 0;
+let cache: Record<string, CachedRepo> = {};
+
+function lookupRepo(repo: string): CachedRepo | undefined {
+	try {
+		const mtime = statSync(GITHUB_CACHE_PATH).mtimeMs;
+		if (mtime !== cacheMtime) {
+			cache = JSON.parse(readFileSync(GITHUB_CACHE_PATH, "utf-8"));
+			cacheMtime = mtime;
+		}
+	} catch {
+		return undefined;
+	}
+	return cache[repo];
+}
+
 /** Handles :::admonition, ::github{repo}, and :spoiler directives. */
 export const directivesPlugin = defineMdastPlugin({
-  name: "huwari-directives",
+	name: "huwari-directives",
 
   containerDirective(node, ctx) {
     if (!isAdmonitionType(node.name)) return;
@@ -54,9 +81,10 @@ export const directivesPlugin = defineMdastPlugin({
 			return empty;
 		}
 		const full = `${repo.owner}/${repo.name}`;
+		const info = lookupRepo(full);
 		const avatar: Image = {
 			type: "image",
-			url: `https://github.com/${repo.owner}.png`,
+			url: info?.avatar || `https://github.com/${repo.owner}.png`,
 			alt: `${repo.owner} avatar`,
 		};
 		const owner: Emphasis = {
@@ -76,19 +104,19 @@ export const directivesPlugin = defineMdastPlugin({
 		};
 		const description: Emphasis = {
 			type: "emphasis",
-			children: [{ type: "text", value: "Loading repository info…" }],
+			children: [{ type: "text", value: info?.description || "No description" }],
 		};
-		const stat = (): Emphasis => ({
+		const stat = (value: string): Emphasis => ({
 			type: "emphasis",
-			children: [{ type: "text", value: "—" }],
+			children: [{ type: "text", value }],
 		});
-		const info: Emphasis = {
+		const infoBar: Emphasis = {
 			type: "emphasis",
 			children: [
-				withProps(stat(), ["gc-stars"], undefined, "span"),
-				withProps(stat(), ["gc-forks"], undefined, "span"),
-				withProps(stat(), ["gc-license"], undefined, "span"),
-				withProps(stat(), ["gc-language"], undefined, "span"),
+				withProps(stat(info ? compactNumber(info.stars) : "—"), ["gc-stars"], undefined, "span"),
+				withProps(stat(info ? compactNumber(info.forks) : "—"), ["gc-forks"], undefined, "span"),
+				withProps(stat(info?.license || "—"), ["gc-license"], undefined, "span"),
+				withProps(stat(info?.language || "—"), ["gc-language"], undefined, "span"),
 			],
 		};
 		const card: Link = {
@@ -98,10 +126,10 @@ export const directivesPlugin = defineMdastPlugin({
 			children: [
 				withProps(titlebar, ["gc-titlebar"], undefined, "div"),
 				withProps(description, ["gc-description"], undefined, "p"),
-				withProps(info, ["gc-infobar"], undefined, "div"),
+				withProps(infoBar, ["gc-infobar"], undefined, "div"),
 			],
 		};
-		return withProps(card, ["github-card"], { "data-repo": full });
+		return withProps(card, ["github-card"]);
 	},
 
   textDirective(node) {

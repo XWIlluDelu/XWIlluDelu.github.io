@@ -1,32 +1,38 @@
 ---
-import { categoryUrl, tagUrl } from "@/lib/urls";
 import Icon from "./Icon.astro";
+import { getEntry } from "astro:content";
+import { categoryUrl, tagUrl } from "@/lib/urls";
 
 interface Props {
-  tags: { name: string; count: number }[];
-  categories: { name: string; count: number }[];
+	tags: { name: string; count: number }[];
+	categories: { name: string; count: number }[];
 }
 
 const { tags, categories } = Astro.props;
+const site = await getEntry("site", "config");
+if (!site) throw new Error("Site config not found");
+const profile = site.data.profile;
 ---
 
 <aside class="sidebar">
 	<section class="card profile">
 		<a class="profile-avatar-link" href="/about/" aria-label="Go to About Page">
-			<img class="profile-avatar" src="/images/demo-avatar.png" alt="Profile image" loading="lazy" />
+			<img class="profile-avatar" src={profile.avatar} alt="Profile image" loading="lazy" />
 			<span class="profile-avatar-overlay" aria-hidden="true">
 				<Icon name="id-card" />
 			</span>
 		</a>
-		<p class="profile-name">Your Name</p>
+		<p class="profile-name">{profile.name}</p>
 		<div class="profile-bar"></div>
-		<p class="profile-bio">A short bio.</p>
+		<p class="profile-bio">{profile.bio}</p>
 		<ul class="profile-links">
-			<li>
-				<a href="https://github.com/" target="_blank" rel="me noopener" aria-label="GitHub">
-					<Icon name="github" />
-				</a>
-			</li>
+			{profile.links.map((link) => (
+				<li>
+					<a href={link.url} target="_blank" rel="me noopener" aria-label={link.name}>
+						<Icon name="github" />
+					</a>
+				</li>
+			))}
 		</ul>
 	</section>
 	<section class="card">
@@ -78,6 +84,12 @@ const { tags, categories } = Astro.props;
 		margin: 0 auto;
 		border-radius: 0.75rem;
 		font-size: 3rem;
+	}
+
+	@media (min-width: 64rem) {
+		.profile-avatar-link {
+			max-width: none;
+		}
 	}
 
 	.profile-avatar-overlay {

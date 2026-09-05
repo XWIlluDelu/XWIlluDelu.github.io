@@ -38,7 +38,6 @@ describe("github cards", () => {
 		expect(html).toContain("gc-titlebar");
 		expect(html).toContain("gc-avatar");
 		expect(html).toContain("gc-infobar");
-		expect(html).toContain("data-repo");
 	});
 
   test("drops malformed repos instead of linking", async () => {
