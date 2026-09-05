@@ -3,7 +3,7 @@ import { render } from "astro:content";
 import { getCategoryList, getPostsWithNav, getSortedPosts, getTagList } from "@/lib/content";
 import { formatDateToYYYYMMDD } from "@/lib/dates";
 import { computeReadingStats } from "@/lib/reading";
-import { categoryUrl, postUrl, tagUrl } from "@/lib/urls";
+import { categoryUrl, postUrl, tagUrl, withBase } from "@/lib/urls";
 import Icon from "../../components/Icon.astro";
 import Markdown from "../../components/Markdown.astro";
 import Banner from "../../components/Banner.astro";
@@ -68,7 +68,7 @@ const categories = await getCategoryList();
 			)}
 			</div>
 		<div class="post-divider"></div>
-		{data.image && <img class="post-cover" src={data.image} alt="" loading="lazy" />}
+		{data.image && <img class="post-cover" src={withBase(data.image)} alt="" loading="lazy" />}
 		<div class="post-grid">
 			<Markdown>
 				<Content />

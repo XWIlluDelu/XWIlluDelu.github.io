@@ -1,6 +1,6 @@
 ---
 import { formatDateToYYYYMMDD } from "@/lib/dates";
-import { categoryUrl, tagUrl } from "@/lib/urls";
+import { categoryUrl, tagUrl, withBase } from "@/lib/urls";
 import Icon from "./Icon.astro";
 
 interface Props {
@@ -51,7 +51,7 @@ const { title, url, published, tags, category, description, image, words, minute
 	</div>
 	{image && (
 		<a class="post-thumb" href={url} aria-label={title} tabindex="-1">
-			<img src={image} alt="" loading="lazy" />
+			<img src={withBase(image)} alt="" loading="lazy" />
 			<span class="thumb-arrow" aria-hidden="true">
 				<Icon name="chevron-right" />
 			</span>

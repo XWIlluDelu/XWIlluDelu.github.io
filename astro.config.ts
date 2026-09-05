@@ -9,7 +9,8 @@ import { directivesPlugin } from "./src/plugins/directives";
 
 // https://astro.build/config
 export default defineConfig({
-  site: "https://huwari.example.com/",
+	site: "https://l4ph.github.io",
+	base: "/huwari",
   trailingSlash: "always",
   integrations: [sitemap()],
   markdown: {

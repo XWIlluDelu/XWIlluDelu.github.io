@@ -2,6 +2,7 @@
 import { ClientRouter } from "astro:transitions";
 import { getEntry } from "astro:content";
 import Icon from "../components/Icon.astro";
+import { withBase } from "../lib/urls";
 import "../styles/tokens.css";
 
 interface Props {
@@ -24,10 +25,10 @@ const pageDescription = description ?? site.data.subtitle;
 		<meta name="generator" content={Astro.generator} />
 		<meta name="description" content={description} />
 		<title>{pageTitle}</title>
-		<link rel="icon" href="/favicon/favicon-light-32.png" sizes="32x32" media="(prefers-color-scheme: light)" />
-		<link rel="icon" href="/favicon/favicon-dark-32.png" sizes="32x32" media="(prefers-color-scheme: dark)" />
-		<link rel="icon" href="/favicon/favicon-light-192.png" sizes="192x192" media="(prefers-color-scheme: light)" />
-		<link rel="icon" href="/favicon/favicon-dark-192.png" sizes="192x192" media="(prefers-color-scheme: dark)" />
+		<link rel="icon" href={withBase("/favicon/favicon-light-32.png")} sizes="32x32" media="(prefers-color-scheme: light)" />
+		<link rel="icon" href={withBase("/favicon/favicon-dark-32.png")} sizes="32x32" media="(prefers-color-scheme: dark)" />
+		<link rel="icon" href={withBase("/favicon/favicon-light-192.png")} sizes="192x192" media="(prefers-color-scheme: light)" />
+		<link rel="icon" href={withBase("/favicon/favicon-dark-192.png")} sizes="192x192" media="(prefers-color-scheme: dark)" />
 		<ClientRouter />
 		<script is:inline>
 			try {
@@ -47,14 +48,14 @@ const pageDescription = description ?? site.data.subtitle;
 	<body>
 		<header class="navbar" transition:name="site-header">
 			<div class="navbar-inner">
-				<a class="brand" href="/">
+				<a class="brand" href={withBase("/")}>
 					<span class="brand-icon"><Icon name="home" /></span>
 					{site.data.title}
 				</a>
 				<nav class="nav-links" aria-label="Primary">
-					<a href="/">Home</a>
-					<a href="/archive/">Archive</a>
-					<a href="/about/">About</a>
+					<a href={withBase("/")}>Home</a>
+					<a href={withBase("/archive/")}>Archive</a>
+					<a href={withBase("/about/")}>About</a>
 				</nav>
 				<div class="nav-actions">
 					<button class="theme-toggle" id="theme-toggle" type="button" aria-label="Toggle theme">
@@ -64,9 +65,9 @@ const pageDescription = description ?? site.data.subtitle;
 					<details class="nav-menu">
 						<summary aria-label="Menu"><Icon name="menu" /></summary>
 						<div class="nav-menu-panel card">
-							<a href="/">Home</a>
-							<a href="/archive/">Archive</a>
-							<a href="/about/">About</a>
+							<a href={withBase("/")}>Home</a>
+							<a href={withBase("/archive/")}>Archive</a>
+							<a href={withBase("/about/")}>About</a>
 						</div>
 					</details>
 				</div>
@@ -77,8 +78,8 @@ const pageDescription = description ?? site.data.subtitle;
 				<slot />
 			</div>
 			<footer class="footer">
-				© {new Date().getFullYear()} {site.data.title} · <a href="/rss.xml">RSS</a> ·{" "}
-				<a href="/sitemap-index.xml">Sitemap</a>
+				© {new Date().getFullYear()} {site.data.title} · <a href={withBase("/rss.xml")}>RSS</a> ·{" "}
+				<a href={withBase("/sitemap-index.xml")}>Sitemap</a>
 			</footer>
 		</div>
 		<script>

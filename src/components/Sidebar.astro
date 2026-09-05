@@ -1,7 +1,7 @@
 ---
 import Icon from "./Icon.astro";
 import { getEntry } from "astro:content";
-import { categoryUrl, tagUrl } from "@/lib/urls";
+import { categoryUrl, tagUrl, withBase } from "@/lib/urls";
 
 interface Props {
 	tags: { name: string; count: number }[];
@@ -16,8 +16,8 @@ const profile = site.data.profile;
 
 <aside class="sidebar">
 	<section class="card profile">
-		<a class="profile-avatar-link" href="/about/" aria-label="Go to About Page">
-			<img class="profile-avatar" src={profile.avatar} alt="Profile image" loading="lazy" />
+		<a class="profile-avatar-link" href={withBase("/about/")} aria-label="Go to About Page">
+			<img class="profile-avatar" src={withBase(profile.avatar)} alt="Profile image" loading="lazy" />
 			<span class="profile-avatar-overlay" aria-hidden="true">
 				<Icon name="id-card" />
 			</span>

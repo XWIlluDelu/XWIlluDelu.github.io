@@ -1,12 +1,13 @@
 ---
 import { getEntry } from "astro:content";
+import { withBase } from "../lib/urls";
 
 const site = await getEntry("site", "config");
 if (!site) throw new Error("Site config not found");
 ---
 
 <figure class="banner" transition:name="site-banner">
-	<img src={site.data.banner.src} alt="Site banner" style="object-position: center" loading="lazy" />
+	<img src={withBase(site.data.banner.src)} alt="Site banner" style="object-position: center" loading="lazy" />
 </figure>
 
 <style>
