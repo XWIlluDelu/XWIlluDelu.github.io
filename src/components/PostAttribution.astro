@@ -1,0 +1,41 @@
+---
+import { getEntry } from "astro:content";
+import { resolvePostAuthor, serializeJsonLd } from "../lib/authors";
+import { withBase } from "../lib/urls";
+
+interface Props {
+	title: string;
+	author?: string;
+	published: Date;
+}
+const { title, author, published } = Astro.props;
+const site = await getEntry("site", "config");
+if (!site) throw new Error("Site config not found");
+const settings = site.data.postAttribution;
+const ownerUrl = Astro.site ? new URL(withBase("/"), Astro.site).href : undefined;
+const person = resolvePostAuthor(author, site.data.profile.name, ownerUrl);
+const jsonLd = {
+	"@context": "https://schema.org",
+	"@type": "BlogPosting",
+	headline: title,
+	author: person,
+	datePublished: published.toISOString(),
+};
+---
+
+{settings && (
+	<>
+		<aside class="post-attribution" aria-label="Article attribution">
+			<p>Author: <strong data-post-author>{person.name}</strong></p>
+			{settings.license && <p>License: <a href={settings.license.url} target="_blank" rel="noopener noreferrer">{settings.license.name}</a></p>}
+		</aside>
+		<script is:inline type="application/ld+json" set:html={serializeJsonLd(jsonLd)}></script>
+	</>
+)}
+
+<style>
+	.post-attribution { margin-top: 1.5rem; padding: 0.8rem 1rem; border-radius: var(--radius); background: var(--btn-bg); color: var(--text-muted); font-size: 0.875rem; }
+	.post-attribution p { margin: 0.25rem 0; }
+	.post-attribution strong { color: var(--text); }
+	.post-attribution a { color: var(--primary); }
+</style>

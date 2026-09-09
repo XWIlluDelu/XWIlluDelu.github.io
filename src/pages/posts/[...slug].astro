@@ -6,6 +6,7 @@ import { computeReadingStats } from "@/lib/reading";
 import { categoryUrl, postUrl, tagUrl, withBase } from "@/lib/urls";
 import Icon from "../../components/Icon.astro";
 import Markdown from "../../components/Markdown.astro";
+import PostAttribution from "../../components/PostAttribution.astro";
 import Banner from "../../components/Banner.astro";
 import Sidebar from "../../components/Sidebar.astro";
 import TOC from "../../components/TOC.astro";
@@ -77,6 +78,7 @@ const categories = await getCategoryList();
 				<TOC headings={headings} />
 			</div>
 		</div>
+		<PostAttribution title={data.title} author={data.author} published={data.published} />
 	</article>
 	<nav class="pagination">
 		{current.nextSlug && <a href={postUrl(current.nextSlug)} rel="next">← {current.nextTitle}</a>}
