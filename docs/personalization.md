@@ -1,0 +1,58 @@
+# Personalization Changes
+
+This repository is a fork of [L4Ph/huwari](https://github.com/L4Ph/huwari), with personalization commits based directly on upstream commit `89a27da`. It retains Huwari's Git history rather than importing a source snapshot.
+
+The former repository and its Fuwari history are preserved in [XWIlluDelu.github.io-archive](https://github.com/XWIlluDelu/XWIlluDelu.github.io-archive).
+
+## General Changes
+
+These use Huwari's existing configuration and content interfaces without extending blog functionality.
+
+| Change | Location |
+| --- | --- |
+| Site title and profile name: `虚妄IlluDelu`; subtitle: `My Blog` | `site.config.json` |
+| Bio: `不实为虚，非分为妄。` | `site.config.json` |
+| Personal GitHub, BiliBili, and Steam links | `profile.links` |
+| A fixed winter avatar for every season | `profile.avatar`, `public/images/winter-avatar.jpg` |
+| Personal introduction and links on the About page | `src/content/about.md` |
+
+## Special Changes
+
+These extend configuration or components to support personalization. The added capabilities are optional and do not replace existing upstream functionality.
+
+| Change | Configuration and implementation |
+| --- | --- |
+| External navigation links | Optional `navigation`; appends the personal GitHub link to desktop and mobile navigation while retaining Home/Archive/About |
+| Profile link icons | Optional `profile.links[].icon`; adds BiliBili and Steam icons, retaining the upstream GitHub icon as the default |
+| Seasonal banners and hues | Optional `seasonalThemes`; `src/lib/seasons.ts` selects the season at build time, and `site-theme.ts` supplies it to pages |
+| Artwork credits | Optional `banner.credit`, rendered by `Banner.astro` |
+| Hue adjustment | Optional `colorPicker`; `HuePicker.astro` keeps the selection in memory across client-side navigation and resets it on reload, without changing light/dark theme storage |
+| Self-hosted fonts | `fonts: "noto"`; `NotoFonts.astro` and `public/fonts/` cover body text, controls, and code; upstream fonts remain in use when this option is omitted |
+| Per-post authors | Optional frontmatter `author`; falls back to the profile owner when omitted and does not assign the owner's URL to other authors |
+| Article attribution | Optional `postAttribution`, with optional `license`; `PostAttribution.astro` displays author and license information, using the same author data for JSON-LD |
+
+### Seasonal Configuration
+
+| Season | Months | Hue | Banner |
+| --- | --- | --- | --- |
+| Spring | March–May | 150 | `spring-banner.jpg` |
+| Summer | June–August | 250 | `summer-banner.jpg` |
+| Autumn | September–November | 290 | `autumn-banner.jpg` |
+| Winter | December–February | 20 | `winter-banner.jpg` |
+
+Banners retain Huwari's native centered positioning, height, and responsive layout. The former positioning logic is not carried over. The avatar remains fixed across seasons. Season selection uses the build machine's date; changing seasons requires rebuilding the site.
+
+## Boundaries
+
+- Retain Huwari's default language, light/dark theme behavior, dependencies, and lockfile.
+- Do not migrate the former RSS, canonical URL, component-fix, or type-annotation patches.
+- Do not carry temporary migration tests, preview tools, or their history into this fork. Upstream tests remain unchanged.
+- Keep deployment configuration separate from personalization.
+
+## Semantic Commit Groups
+
+- Configure site identity, the fixed avatar, and About content.
+- Add external navigation links and profile icons.
+- Add seasonal banners, hues, credits, and the hue picker, including mobile panel positioning.
+- Add self-hosted Noto fonts, including type-safe handling of the optional configuration.
+- Add per-post authors and article attribution.
