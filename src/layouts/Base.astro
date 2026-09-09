@@ -56,6 +56,9 @@ const pageDescription = description ?? site.data.subtitle;
 					<a href={withBase("/")}>Home</a>
 					<a href={withBase("/archive/")}>Archive</a>
 					<a href={withBase("/about/")}>About</a>
+					{site.data.navigation?.map((link) => (
+						<a href={link.url} target="_blank" rel="noopener noreferrer">{link.name} ↗</a>
+					))}
 				</nav>
 				<div class="nav-actions">
 					<button class="theme-toggle" id="theme-toggle" type="button" aria-label="Toggle theme">
@@ -68,6 +71,9 @@ const pageDescription = description ?? site.data.subtitle;
 							<a href={withBase("/")}>Home</a>
 							<a href={withBase("/archive/")}>Archive</a>
 							<a href={withBase("/about/")}>About</a>
+							{site.data.navigation?.map((link) => (
+								<a href={link.url} target="_blank" rel="noopener noreferrer">{link.name} ↗</a>
+							))}
 						</div>
 					</details>
 				</div>

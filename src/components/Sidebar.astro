@@ -29,7 +29,7 @@ const profile = site.data.profile;
 			{profile.links.map((link) => (
 				<li>
 					<a href={link.url} target="_blank" rel="me noopener" aria-label={link.name}>
-						<Icon name="github" />
+						<Icon name={link.icon ?? "github"} />
 					</a>
 				</li>
 			))}

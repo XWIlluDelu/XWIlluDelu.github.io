@@ -27,11 +27,16 @@ const site = defineCollection({
 		subtitle: z.string(),
 		lang: z.string().min(1),
 		banner: z.object({ src: z.string().min(1) }),
+		navigation: z.array(z.object({ name: z.string().min(1), url: z.url() })).optional(),
 		profile: z.object({
 			name: z.string().min(1),
 			bio: z.string(),
 			avatar: z.string().min(1),
-			links: z.array(z.object({ name: z.string(), url: z.string().url() })),
+			links: z.array(z.object({
+				name: z.string(),
+				url: z.string().url(),
+				icon: z.enum(["github", "bilibili", "steam"]).optional(),
+			})),
 		}),
 	}),
 });
