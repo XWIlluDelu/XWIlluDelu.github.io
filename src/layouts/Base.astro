@@ -3,6 +3,7 @@ import { ClientRouter } from "astro:transitions";
 import { getEntry } from "astro:content";
 import Icon from "../components/Icon.astro";
 import HuePicker from "../components/HuePicker.astro";
+import NotoFonts from "../components/NotoFonts.astro";
 import { getSiteTheme } from "../lib/site-theme";
 import { withBase } from "../lib/urls";
 import "../styles/tokens.css";
@@ -21,7 +22,7 @@ const seasonalTheme = await getSiteTheme();
 ---
 
 <!DOCTYPE html>
-<html lang="en" data-theme="light" data-season={seasonalTheme.season} style={seasonalTheme.hue === undefined ? undefined : `--hue: ${seasonalTheme.hue}`}>
+<html lang="en" data-theme="light" data-fonts={site.data.fonts} data-season={seasonalTheme.season} style={seasonalTheme.hue === undefined ? undefined : `--hue: ${seasonalTheme.hue}`}>
 	<head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width" />
@@ -32,6 +33,7 @@ const seasonalTheme = await getSiteTheme();
 		<link rel="icon" href={withBase("/favicon/favicon-dark-32.png")} sizes="32x32" media="(prefers-color-scheme: dark)" />
 		<link rel="icon" href={withBase("/favicon/favicon-light-192.png")} sizes="192x192" media="(prefers-color-scheme: light)" />
 		<link rel="icon" href={withBase("/favicon/favicon-dark-192.png")} sizes="192x192" media="(prefers-color-scheme: dark)" />
+		{site.data.fonts === "noto" && <NotoFonts />}
 		<ClientRouter />
 		<script is:inline>
 			try {
