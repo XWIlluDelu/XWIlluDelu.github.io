@@ -43,6 +43,7 @@ const site = defineCollection({
 			winter: seasonalThemeSchema,
 		}).optional(),
 		colorPicker: z.boolean().optional(),
+		fonts: z.literal("noto").optional(),
 		navigation: z.array(z.object({ name: z.string().min(1), url: z.url() })).optional(),
 		profile: z.object({
 			name: z.string().min(1),

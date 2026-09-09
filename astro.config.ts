@@ -6,6 +6,8 @@ import { pluginLineNumbers } from "@expressive-code/plugin-line-numbers";
 import { defineConfig } from "astro/config";
 import expressiveCode from "satteri-expressive-code";
 import { directivesPlugin } from "./src/plugins/directives";
+import siteConfig from "./site.config.json";
+import { notoFontStack } from "./src/lib/fonts";
 
 // https://astro.build/config
 export default defineConfig({
@@ -21,6 +23,10 @@ export default defineConfig({
       hastPlugins: [
         expressiveCode({
           themes: ["github-dark"],
+          ...("fonts" in siteConfig && siteConfig.fonts === "noto" ? { styleOverrides: {
+            codeFontFamily: notoFontStack,
+            uiFontFamily: notoFontStack,
+          } } : {}),
           plugins: [pluginCollapsibleSections(), pluginLineNumbers()],
         }),
       ],

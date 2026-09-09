@@ -1,0 +1,21 @@
+---
+import { withBase } from "../lib/urls";
+import { notoFontStack } from "../lib/fonts";
+
+const faces = [
+	["NotoSansMono", "NotoSansMono-VariableFont_wdth,wght.woff2", "100 900"],
+	["NotoSansSC", "NotoSansSC-VariableFont_wght.woff2", "100 900"],
+	["NotoColorEmoji", "NotoColorEmoji-Regular.woff2", "400"],
+].map(([family, file, weight]) => `@font-face {
+	font-family: "${family}";
+	src: url("${withBase(`/fonts/${file}`)}") format("woff2");
+	font-style: normal;
+	font-weight: ${weight};
+	font-display: swap;
+}`).join("\n");
+const rules = `${faces}
+html[data-fonts="noto"] { --personal-font: ${notoFontStack}; font-family: var(--personal-font); }
+html[data-fonts="noto"] :is(button, input, select, textarea, code, pre, kbd, samp) { font-family: var(--personal-font); }
+`;
+---
+<style is:inline set:html={rules}></style>

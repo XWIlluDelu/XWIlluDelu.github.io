@@ -6,6 +6,7 @@
     "src": "/images/banners/spring-1920.webp"
   },
   "colorPicker": true,
+  "fonts": "noto",
   "seasonalThemes": {
     "spring": {
       "hue": 150,
