@@ -3,7 +3,38 @@
   "subtitle": "My Blog",
   "lang": "en",
   "banner": {
-    "src": "/images/demo-banner.png"
+    "src": "/images/spring-banner.jpg"
+  },
+  "colorPicker": true,
+  "seasonalThemes": {
+    "spring": {
+      "hue": 150,
+      "banner": {
+        "src": "/images/spring-banner.jpg",
+        "credit": { "text": "こむぎこ2000 @komugiko_2000", "url": "https://x.com/komugiko_2000" }
+      }
+    },
+    "summer": {
+      "hue": 250,
+      "banner": {
+        "src": "/images/summer-banner.jpg",
+        "credit": { "text": "萩森じあ @jirujiaru826", "url": "https://x.com/jirujiaru826" }
+      }
+    },
+    "autumn": {
+      "hue": 290,
+      "banner": {
+        "src": "/images/autumn-banner.jpg",
+        "credit": { "text": "荻pote @ogipote", "url": "https://x.com/ogipote" }
+      }
+    },
+    "winter": {
+      "hue": 20,
+      "banner": {
+        "src": "/images/winter-banner.jpg",
+        "credit": { "text": "crisalys✨ @Criisalys", "url": "https://x.com/criisalys" }
+      }
+    }
   },
   "navigation": [{ "name": "GitHub", "url": "https://github.com/XWIlluDelu" }],
   "profile": {

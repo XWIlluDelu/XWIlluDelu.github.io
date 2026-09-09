@@ -2,6 +2,8 @@
 import { ClientRouter } from "astro:transitions";
 import { getEntry } from "astro:content";
 import Icon from "../components/Icon.astro";
+import HuePicker from "../components/HuePicker.astro";
+import { getSiteTheme } from "../lib/site-theme";
 import { withBase } from "../lib/urls";
 import "../styles/tokens.css";
 
@@ -15,10 +17,11 @@ const site = await getEntry("site", "config");
 if (!site) throw new Error("Site config not found");
 const pageTitle = title ? `${title} - ${site.data.title}` : `${site.data.title} - ${site.data.subtitle}`;
 const pageDescription = description ?? site.data.subtitle;
+const seasonalTheme = await getSiteTheme();
 ---
 
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en" data-theme="light" data-season={seasonalTheme.season} style={seasonalTheme.hue === undefined ? undefined : `--hue: ${seasonalTheme.hue}`}>
 	<head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width" />
@@ -61,6 +64,7 @@ const pageDescription = description ?? site.data.subtitle;
 					))}
 				</nav>
 				<div class="nav-actions">
+					{site.data.colorPicker && <HuePicker hue={seasonalTheme.hue} />}
 					<button class="theme-toggle" id="theme-toggle" type="button" aria-label="Toggle theme">
 						<span class="icon-sun"><Icon name="sun" /></span>
 						<span class="icon-moon"><Icon name="moon" /></span>
