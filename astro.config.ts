@@ -11,8 +11,8 @@ import { notoFontStack } from "./src/lib/fonts";
 
 // https://astro.build/config
 export default defineConfig({
-	site: "https://l4ph.github.io",
-	base: "/huwari",
+	site: "https://xwilludelu.github.io",
+	base: "/",
   trailingSlash: "always",
   integrations: [sitemap()],
   markdown: {
