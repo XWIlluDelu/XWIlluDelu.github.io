@@ -11,5 +11,6 @@ export async function getSiteTheme() {
 		season: selected ? buildSeason : undefined,
 		hue: selected?.hue,
 		banner: selected?.banner ?? site.data.banner,
+		avatar: selected?.avatar ?? site.data.profile.avatar,
 	};
 }

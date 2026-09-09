@@ -2,6 +2,7 @@
 import Icon from "./Icon.astro";
 import { getEntry } from "astro:content";
 import { categoryUrl, tagUrl, withBase } from "@/lib/urls";
+import { getSiteTheme } from "@/lib/site-theme";
 
 interface Props {
 	tags: { name: string; count: number }[];
@@ -12,12 +13,13 @@ const { tags, categories } = Astro.props;
 const site = await getEntry("site", "config");
 if (!site) throw new Error("Site config not found");
 const profile = site.data.profile;
+const { avatar } = await getSiteTheme();
 ---
 
 <aside class="sidebar">
 	<section class="card profile">
 		<a class="profile-avatar-link" href={withBase("/about/")} aria-label="Go to About Page">
-			<img class="profile-avatar" src={withBase(profile.avatar)} alt="Profile image" loading="lazy" />
+			<img class="profile-avatar" src={withBase(avatar)} alt="Profile image" loading="lazy" />
 			<span class="profile-avatar-overlay" aria-hidden="true">
 				<Icon name="id-card" />
 			</span>
