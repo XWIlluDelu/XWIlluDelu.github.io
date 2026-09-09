@@ -4,10 +4,14 @@ title: About
 
 # About
 
-This is a demo site for Huwari, a minimal Astro blog template.
+我是虚妄IlluDelu，很高兴见到你。
 
-::github{repo="saicaca/fuwari"}
+这里是我的个人站点，用来记录一些想法与内容。
 
-> Image sources used in this demo:
->
-> - The banner, avatar, and cover images are placeholders from the Fuwari project.
+> 不实为虚，非分为妄。
+
+你也可以在这些地方找到我：
+
+- [GitHub](https://github.com/XWIlluDelu)
+- [BiliBili](https://space.bilibili.com/137874)
+- [Steam](https://steamcommunity.com/profiles/76561199133976817)

@@ -1,14 +1,18 @@
 {
-  "title": "Huwari",
-  "subtitle": "A minimal Astro blog template",
+  "title": "虚妄IlluDelu",
+  "subtitle": "My Blog",
   "lang": "en",
   "banner": {
     "src": "/images/demo-banner.png"
   },
   "profile": {
-    "name": "Your Name",
-    "bio": "A short bio.",
-    "avatar": "/images/demo-avatar.png",
-    "links": [{ "name": "GitHub", "url": "https://github.com/" }]
+    "name": "虚妄IlluDelu",
+    "bio": "不实为虚，非分为妄。",
+    "avatar": "/images/winter-avatar.jpg",
+    "links": [
+      { "name": "GitHub", "url": "https://github.com/XWIlluDelu" },
+      { "name": "BiliBili", "url": "https://space.bilibili.com/137874" },
+      { "name": "Steam", "url": "https://steamcommunity.com/profiles/76561199133976817" }
+    ]
   }
 }
