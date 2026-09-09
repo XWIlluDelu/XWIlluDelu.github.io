@@ -13,6 +13,7 @@
   "seasonalThemes": {
     "spring": {
       "hue": 150,
+      "avatar": "/images/avatar.png",
       "banner": {
         "src": "/images/spring-banner.jpg",
         "credit": { "text": "こむぎこ2000 @komugiko_2000", "url": "https://x.com/komugiko_2000" }
@@ -20,6 +21,7 @@
     },
     "summer": {
       "hue": 250,
+      "avatar": "/images/avatar.png",
       "banner": {
         "src": "/images/summer-banner.jpg",
         "credit": { "text": "萩森じあ @jirujiaru826", "url": "https://x.com/jirujiaru826" }
@@ -27,6 +29,7 @@
     },
     "autumn": {
       "hue": 290,
+      "avatar": "/images/avatar.png",
       "banner": {
         "src": "/images/autumn-banner.jpg",
         "credit": { "text": "荻pote @ogipote", "url": "https://x.com/ogipote" }
@@ -34,6 +37,7 @@
     },
     "winter": {
       "hue": 20,
+      "avatar": "/images/avatar.png",
       "banner": {
         "src": "/images/winter-banner.jpg",
         "credit": { "text": "crisalys✨ @Criisalys", "url": "https://x.com/criisalys" }
@@ -44,7 +48,7 @@
   "profile": {
     "name": "虚妄IlluDelu",
     "bio": "不实为虚，非分为妄。",
-    "avatar": "/images/winter-avatar.jpg",
+    "avatar": "/images/avatar.png",
     "links": [
       { "name": "GitHub", "url": "https://github.com/XWIlluDelu", "icon": "github" },
       { "name": "BiliBili", "url": "https://space.bilibili.com/137874", "icon": "bilibili" },

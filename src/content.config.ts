@@ -28,6 +28,7 @@ const bannerSchema = z.object({
 const seasonalThemeSchema = z.object({
 	hue: z.number().min(0).max(360),
 	banner: bannerSchema,
+	avatar: z.string().trim().min(1).optional(),
 });
 
 const site = defineCollection({
