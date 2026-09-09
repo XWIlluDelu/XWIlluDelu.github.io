@@ -17,6 +17,7 @@ const posts = defineCollection({
 		category: z.string().optional().default(""),
 		draft: z.boolean().optional().default(false),
 		lang: z.string().optional().default(""),
+		author: z.string().trim().min(1).optional(),
 	}),
 });
 
@@ -44,6 +45,9 @@ const site = defineCollection({
 		}).optional(),
 		colorPicker: z.boolean().optional(),
 		fonts: z.literal("noto").optional(),
+		postAttribution: z.object({
+			license: z.object({ name: z.string().min(1), url: z.url() }).optional(),
+		}).optional(),
 		navigation: z.array(z.object({ name: z.string().min(1), url: z.url() })).optional(),
 		profile: z.object({
 			name: z.string().min(1),
