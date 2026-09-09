@@ -56,3 +56,10 @@ Banners retain Huwari's native centered positioning, height, and responsive layo
 - Add seasonal banners, hues, credits, and the hue picker, including mobile panel positioning.
 - Add self-hosted Noto fonts, including type-safe handling of the optional configuration.
 - Add per-post authors and article attribution.
+- Configure GitHub Pages separately from personalization.
+
+## GitHub Pages
+
+The public site is `https://xwilludelu.github.io/`. `astro.config.ts` uses this URL and the root base path `/`, since this is an account-level Pages repository rather than the upstream `/huwari` project site.
+
+GitHub Pages uses the Actions build source and Huwari's existing `.github/workflows/deploy.yml`, triggered by pushes to `main` or manual dispatch. The workflow builds and uploads the Astro site, then deploys the Pages artifact. No custom domain or former server/OSS credentials are used.
