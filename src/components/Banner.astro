@@ -1,13 +1,17 @@
 ---
-import { getEntry } from "astro:content";
 import { withBase } from "../lib/urls";
+import { getSiteTheme } from "../lib/site-theme";
 
-const site = await getEntry("site", "config");
-if (!site) throw new Error("Site config not found");
+const { banner, season } = await getSiteTheme();
 ---
 
-<figure class="banner" transition:name="site-banner">
-	<img src={withBase(site.data.banner.src)} alt="Site banner" style="object-position: center" loading="lazy" />
+<figure class="banner" transition:name="site-banner" data-season={season}>
+	<img src={withBase(banner.src)} alt="Site banner" style="object-position: center" loading="lazy" />
+	{banner.credit && (
+		<figcaption class="banner-credit">
+			<a href={banner.credit.url} target="_blank" rel="noopener noreferrer">© {banner.credit.text} ↗</a>
+		</figcaption>
+	)}
 </figure>
 
 <style>
@@ -20,6 +24,26 @@ if (!site) throw new Error("Site config not found");
 		min-height: 22rem;
 		overflow: hidden;
 	}
+
+	.banner-credit {
+		position: absolute;
+		right: 1rem;
+		bottom: 1rem;
+		max-width: calc(100% - 2rem);
+		font-size: 0.75rem;
+	}
+
+	.banner-credit a {
+		display: block;
+		padding: 0.35rem 0.7rem;
+		border-radius: 1rem;
+		background: rgb(0 0 0 / 0.65);
+		color: white;
+		text-decoration: none;
+		overflow-wrap: anywhere;
+	}
+
+	.banner-credit a:hover { background: rgb(0 0 0 / 0.8); }
 
 	.banner img {
 		display: block;

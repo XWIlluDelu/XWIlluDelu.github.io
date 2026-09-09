@@ -1,0 +1,57 @@
+---
+interface Props { hue?: number; }
+const { hue = 250 } = Astro.props;
+---
+
+<details class="hue-picker">
+	<summary aria-label="Theme color" title="Theme color"><span aria-hidden="true"></span></summary>
+	<div class="hue-panel card">
+		<label for="theme-hue">Theme color <output id="theme-hue-value" for="theme-hue">{hue}°</output></label>
+		<input id="theme-hue" data-hue-picker data-default-hue={hue} type="range" min="0" max="360" step="1" value={hue} />
+		<small>Resets to the seasonal color on reload.</small>
+	</div>
+</details>
+
+<script>
+	// Memory only. Do not read/write Huwari's existing theme preference or localStorage.
+	let selectedHue: number | undefined;
+	function applyHue() {
+		const input = document.querySelector<HTMLInputElement>("[data-hue-picker]");
+		if (!input) return;
+		const value = selectedHue ?? Number(input.dataset.defaultHue);
+		input.value = String(value);
+		document.documentElement.style.setProperty("--hue", String(value));
+		const output = document.getElementById("theme-hue-value");
+		if (output) output.textContent = `${value}°`;
+	}
+	document.addEventListener("input", (event) => {
+		if (!(event.target instanceof HTMLInputElement) || !event.target.matches("[data-hue-picker]")) return;
+		selectedHue = Number(event.target.value);
+		applyHue();
+	});
+	document.addEventListener("astro:after-swap", applyHue);
+	document.addEventListener("astro:page-load", applyHue);
+	applyHue();
+</script>
+
+<style>
+	.hue-picker { position: relative; }
+	summary { display: flex; align-items: center; justify-content: center; width: 2.75rem; height: 2.75rem; cursor: pointer; list-style: none; border-radius: 0.7rem; }
+	summary::-webkit-details-marker { display: none; }
+	summary:hover { background: var(--btn-bg-hover); }
+	summary span { width: 1.1rem; height: 1.1rem; border: 3px solid var(--primary); border-radius: 50%; }
+	.hue-panel { position: absolute; z-index: 1; right: 0; top: calc(100% + 0.5rem); width: min(17rem, 80vw); padding: 1rem; }
+	label { display: flex; justify-content: space-between; font-weight: 600; }
+	input { display: block; width: 100%; margin: 1rem 0; accent-color: var(--primary); }
+	small { color: var(--text-muted); }
+
+	@media (max-width: 47.99rem) {
+		.hue-panel {
+			position: fixed;
+			top: 5rem;
+			left: 1rem;
+			right: 1rem;
+			width: auto;
+		}
+	}
+</style>

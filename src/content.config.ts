@@ -20,13 +20,29 @@ const posts = defineCollection({
 	}),
 });
 
+const bannerSchema = z.object({
+	src: z.string().min(1),
+	credit: z.object({ text: z.string().min(1), url: z.url() }).optional(),
+});
+const seasonalThemeSchema = z.object({
+	hue: z.number().min(0).max(360),
+	banner: bannerSchema,
+});
+
 const site = defineCollection({
 	loader: siteLoader(),
 	schema: z.object({
 		title: z.string().min(1),
 		subtitle: z.string(),
 		lang: z.string().min(1),
-		banner: z.object({ src: z.string().min(1) }),
+		banner: bannerSchema,
+		seasonalThemes: z.object({
+			spring: seasonalThemeSchema,
+			summer: seasonalThemeSchema,
+			autumn: seasonalThemeSchema,
+			winter: seasonalThemeSchema,
+		}).optional(),
+		colorPicker: z.boolean().optional(),
 		navigation: z.array(z.object({ name: z.string().min(1), url: z.url() })).optional(),
 		profile: z.object({
 			name: z.string().min(1),
