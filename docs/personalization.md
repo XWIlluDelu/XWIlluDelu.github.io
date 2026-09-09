@@ -82,4 +82,6 @@ The explicit `--favicon-dir` option exports the production PNGs. Without it, the
 
 The public site is `https://xwilludelu.github.io/`. `astro.config.ts` uses this URL and the root base path `/`, since this is an account-level Pages repository rather than the upstream `/huwari` project site.
 
-GitHub Pages uses the Actions build source and Huwari's existing `.github/workflows/deploy.yml`, triggered by pushes to `main` or manual dispatch. The workflow builds and uploads the Astro site, then deploys the Pages artifact. No custom domain or former server/OSS credentials are used.
+GitHub Pages uses the Actions build source and Huwari's `.github/workflows/deploy.yml`, triggered by pushes to `main`, manual dispatch, or a monthly schedule at 04:00 on the first day of each month in `Asia/Shanghai` (`cron: "0 4 1 * *"`). The build job also sets `TZ: Asia/Shanghai`, so seasonal selection uses the new local month rather than the previous UTC date. This applies to all deployment triggers.
+
+The workflow builds and uploads the Astro site, then deploys the Pages artifact. Scheduled runs may be delayed, and publication follows build completion rather than happening exactly at 04:00. GitHub automatically disables scheduled workflows in public repositories after 60 days without repository activity; re-enable the schedule if this occurs. No custom domain or former server/OSS credentials are used.
