@@ -1,38 +1,27 @@
-# Personalization Changes
+# Personalization Guide
 
-This repository is a fork of [L4Ph/huwari](https://github.com/L4Ph/huwari), with personalization commits based directly on upstream commit `89a27da`. It retains Huwari's Git history rather than importing a source snapshot.
+This blog forks [L4Ph/huwari](https://github.com/L4Ph/huwari) at commit `89a27da`, retaining its Git history. The former Fuwari-based site is preserved in [XWIlluDelu.github.io-archive](https://github.com/XWIlluDelu/XWIlluDelu.github.io-archive).
 
-The former repository and its Fuwari history are preserved in [XWIlluDelu.github.io-archive](https://github.com/XWIlluDelu/XWIlluDelu.github.io-archive).
+## Configuration
 
-## General Changes
+Edit [site.config.json](../site.config.json) for site identity, profile links and appearance; edit [About](../src/content/about.md) for the personal introduction. Images live in [public/images/](../public/images/).
 
-These use Huwari's existing configuration and content interfaces without extending blog functionality.
+The fork adds these optional settings, validated by [src/content.config.ts](../src/content.config.ts):
 
-| Change | Location |
+| Setting | Behavior |
 | --- | --- |
-| Site title and profile name: `虚妄IlluDelu`; subtitle: `My Blog` | `site.config.json` |
-| Bio: `不实为虚，非分为妄。` | `site.config.json` |
-| Personal GitHub, BiliBili, and Steam links | `profile.links` |
-| Default avatar (1024×1024 PNG) | `profile.avatar`, `public/images/avatar.png` |
-| Personal introduction and links on the About page | `src/content/about.md` |
-| Matching light/dark pixel-art icons across all bundled sizes | `public/favicon/favicon-{light,dark}-{32,128,180,192}.png`; existing declarations unchanged |
+| `navigation` | Append external links to the desktop and mobile navigation. Home, Archive and About remain available. |
+| `profile.links[].icon` | Choose `github`, `bilibili` or `steam`; defaults to `github`. |
+| `seasonalThemes` | Select a banner, hue and optional avatar at build time; see [Seasons and banners](#seasons-and-banners). |
+| `banner.credit` | Display the artwork credit and source link on the banner. |
+| `colorPicker` | Keep hue adjustments across client-side navigation; reload restores the built color. Light/dark preference is stored separately. |
+| `fonts: "noto"` | Use the self-hosted Noto fonts in `public/fonts/` for text, controls and code. Omission uses upstream fonts. |
+| Post frontmatter `author` | Use the named author, or the profile owner when omitted. Guest authors are listed by name; the owner's URL is attached only to the owner. |
+| `postAttribution` | Display author information and matching JSON-LD; optional `license` adds a license link. The site currently uses CC BY-NC-SA 4.0. |
 
-## Special Changes
+## Seasons and banners
 
-These extend configuration or components to support personalization. The added capabilities are optional and do not replace existing upstream functionality.
-
-| Change | Configuration and implementation |
-| --- | --- |
-| External navigation links | Optional `navigation`; appends the personal GitHub link to desktop and mobile navigation while retaining Home/Archive/About |
-| Profile link icons | Optional `profile.links[].icon`; adds BiliBili and Steam icons, retaining the upstream GitHub icon as the default |
-| Seasonal banners, avatars, and hues | Optional `seasonalThemes`; `src/lib/seasons.ts` selects the season once at build time, and `site-theme.ts` resolves the banner, optional avatar, and hue for all components |
-| Artwork credits | Optional `banner.credit`, rendered by `Banner.astro` |
-| Hue adjustment | Optional `colorPicker`; `HuePicker.astro` keeps the selection in memory across client-side navigation and resets it on reload, without changing light/dark theme storage |
-| Self-hosted fonts | `fonts: "noto"`; `NotoFonts.astro` and `public/fonts/` cover body text, controls, and code; upstream fonts remain in use when this option is omitted |
-| Per-post authors | Optional frontmatter `author`; falls back to the profile owner when omitted and does not assign the owner's URL to other authors |
-| Article attribution | Optional `postAttribution`, with optional `license`; `PostAttribution.astro` displays author and license information, using the same author data for JSON-LD |
-
-### Seasonal Configuration
+[getSeason](../src/lib/seasons.ts) uses the build machine's date. [getSiteTheme](../src/lib/site-theme.ts) selects the season once at build time and supplies its banner, avatar and hue to the components. A new season takes effect when the site is rebuilt.
 
 | Season | Months | Hue | Banner |
 | --- | --- | --- | --- |
@@ -41,31 +30,15 @@ These extend configuration or components to support personalization. The added c
 | Autumn | September–November | 290 | `banners/autumn-1920.webp` |
 | Winter | December–February | 20 | `banners/winter-1920.webp` |
 
-Banners retain Huwari's native centered positioning, height, and responsive layout. The former positioning logic is not carried over. Each season supports an optional `avatar`. The shared theme resolver uses `seasonalThemes[currentSeason].avatar` when configured, otherwise falling back to `profile.avatar`. All four seasons currently explicitly reference `/images/avatar.png`, so they look identical while retaining independent configuration. To change a season's avatar, update only that season's path; duplicating identical image files is unnecessary. This fallback handles omitted configuration, not image-loading failures. Season selection uses the build machine's date; changing seasons requires rebuilding the site.
+Each seasonal `avatar` overrides `profile.avatar`. All four currently point to `/images/avatar.png`; replace that image for a shared avatar, or change a season's path for a distinct one. Omit a seasonal avatar to use the profile default.
 
-## Boundaries
+[Banner.astro](../src/components/Banner.astro) uses `object-fit: cover` in Huwari's existing banner frame, with the image centered.
 
-- Retain Huwari's default language, light/dark theme behavior, dependencies, and lockfile.
-- Do not migrate the former RSS, canonical URL, component-fix, or type-annotation patches.
-- Do not carry temporary migration tests, preview tools, or their history into this fork. Upstream tests remain unchanged.
-- Keep deployment configuration separate from personalization.
+## Pixel-art icons
 
-## Semantic Commit Groups
+[scripts/pixel-art.py](../scripts/pixel-art.py) generates icons offline. The current recipe uses the full square avatar, a 12-color limit, region voting and no dithering. Light and dark variants share the same artwork. The 32px icon uses its own grid and ink threshold; larger icons use integer nearest-neighbor scaling: 128 = 32 × 4, 180 = 36 × 5, and 192 = 48 × 4.
 
-- Configure site identity, the default avatar, and About content.
-- Add external navigation links and profile icons.
-- Add seasonal banners, avatars, hues, credits, and the hue picker, including mobile panel positioning.
-- Add self-hosted Noto fonts, including type-safe handling of the optional configuration.
-- Add per-post authors and article attribution.
-- Configure GitHub Pages separately from personalization.
-
-## Pixel-Art Icon Assets
-
-All icon assets are regenerated from the current 1024×1024 `public/images/avatar.png`, using its complete square composition without a face crop and a palette limit of 12 colors. Icon regeneration is an explicit offline step, not an automatic effect of changing the avatar. Both browser color schemes use identical artwork. All eight bundled 32px, 128px, 180px, and 192px PNG assets are replaced, including sizes not currently referenced by the page. The existing 32px/192px declarations remain unchanged; no additional declarations or PWA configuration are introduced.
-
-`scripts/pixel-art.py` is an offline asset-generation tool, not part of the site's runtime or deployment build. It combines edge-preserving filtering, perceptual Lab palette clustering, discrete region voting with controlled ink retention, and cleanup of isolated near-color pixels. It does not use dithering. The 32px icon is generated on its own grid with a less aggressive ink threshold to avoid merging small facial features. Larger assets use nearest-neighbor integer scaling: 128px comes from the 32px grid at 4×, 180px from an independently generated 36px grid at 5×, and 192px from the 48px master at 4×. This keeps every pixel block the same size within each asset, without inventing extra detail.
-
-To regenerate the icons from the current avatar, install the optional Python dependencies in an isolated environment, then run from the repository root:
+After changing the avatar, regenerate the icons separately. From the repository root, with an isolated Python environment active:
 
 ```sh
 python -m pip install -r scripts/requirements-pixel-art.txt
@@ -76,12 +49,16 @@ python scripts/pixel-art.py public/images/avatar.png \
   --favicon-dir public/favicon
 ```
 
-The explicit `--favicon-dir` option exports the production PNGs. Without it, the script only produces local candidates. Intermediate images, palette metadata, and the comparison sheet stay in the ignored `.astro/` directory.
+`--favicon-dir` writes all eight light/dark 32px, 128px, 180px and 192px PNGs, including sizes retained from upstream but not currently declared by the page. Omit that option to generate candidates only. Previews, palette metadata and the comparison sheet stay in the ignored `.astro/` directory. Page declarations continue to use the 32px and 192px assets.
 
 ## GitHub Pages
 
-The public site is `https://xwilludelu.github.io/`. `astro.config.ts` uses this URL and the root base path `/`, since this is an account-level Pages repository rather than the upstream `/huwari` project site.
+The site is published at `https://xwilludelu.github.io/`. [astro.config.ts](../astro.config.ts) sets that URL and the root base path `/`.
 
-GitHub Pages uses the Actions build source and Huwari's `.github/workflows/deploy.yml`, triggered by pushes to `main`, manual dispatch, or a monthly schedule at 04:00 on the first day of each month in `Asia/Shanghai` (`cron: "0 4 1 * *"`). The build job also sets `TZ: Asia/Shanghai`, so seasonal selection uses the new local month rather than the previous UTC date. This applies to all deployment triggers.
+[deploy.yml](../.github/workflows/deploy.yml) builds and deploys through GitHub Actions on pushes to `main`, manual dispatch, and the first day of each month at 04:00 in `Asia/Shanghai` (`cron: "0 4 1 * *"` with `timezone: Asia/Shanghai`). The build also sets `TZ: Asia/Shanghai`, so season selection uses Shanghai time for every trigger.
 
-The workflow builds and uploads the Astro site, then deploys the Pages artifact. Scheduled runs may be delayed, and publication follows build completion rather than happening exactly at 04:00. GitHub automatically disables scheduled workflows in public repositories after 60 days without repository activity; re-enable the schedule if this occurs. No custom domain or former server/OSS credentials are used.
+For a missing seasonal update, check the Actions run and schedule status. GitHub can delay scheduled runs and [disables them after 60 days without repository activity](https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows#schedule); re-enable the workflow if needed.
+
+## Fork scope
+
+Personalization retains the upstream language, light/dark behavior, dependencies, lockfile and tests. Former RSS, canonical URL, component-fix and type-annotation patches remain in the archived repository. One-off migration tests and preview tools stay outside this fork's history. Keep deployment changes separate from personalization.
