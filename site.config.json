@@ -3,7 +3,16 @@
   "subtitle": "My Blog",
   "lang": "en",
   "banner": {
-    "src": "/images/banners/spring-1920.webp"
+    "src": "/images/banners/spring-1920.webp",
+    "sources": [
+      { "src": "/images/banners/spring-640.webp", "width": 640 },
+      { "src": "/images/banners/spring-1280.webp", "width": 1280 },
+      { "src": "/images/banners/spring-1920.webp", "width": 1920 },
+      { "src": "/images/banners/spring-2560.webp", "width": 2560 },
+      { "src": "/images/banners/spring-3840.webp", "width": 3840 }
+    ],
+    "sizes": "max(100vw, 71.111111vh, 39.111111rem)",
+    "position": 22
   },
   "colorPicker": true,
   "fonts": "noto",
@@ -16,6 +25,15 @@
       "avatar": "/images/avatar.png",
       "banner": {
         "src": "/images/banners/spring-1920.webp",
+        "sources": [
+          { "src": "/images/banners/spring-640.webp", "width": 640 },
+          { "src": "/images/banners/spring-1280.webp", "width": 1280 },
+          { "src": "/images/banners/spring-1920.webp", "width": 1920 },
+          { "src": "/images/banners/spring-2560.webp", "width": 2560 },
+          { "src": "/images/banners/spring-3840.webp", "width": 3840 }
+        ],
+        "sizes": "max(100vw, 71.111111vh, 39.111111rem)",
+        "position": 22,
         "credit": { "text": "こむぎこ2000 @komugiko_2000", "url": "https://x.com/komugiko_2000" }
       }
     },
@@ -24,6 +42,15 @@
       "avatar": "/images/avatar.png",
       "banner": {
         "src": "/images/banners/summer-1920.webp",
+        "sources": [
+          { "src": "/images/banners/summer-640.webp", "width": 640 },
+          { "src": "/images/banners/summer-1280.webp", "width": 1280 },
+          { "src": "/images/banners/summer-1920.webp", "width": 1920 },
+          { "src": "/images/banners/summer-2560.webp", "width": 2560 },
+          { "src": "/images/banners/summer-3840.webp", "width": 3840 }
+        ],
+        "sizes": "max(100vw, 71.111111vh, 39.111111rem)",
+        "position": 72,
         "credit": { "text": "萩森じあ @jirujiaru826", "url": "https://x.com/jirujiaru826" }
       }
     },
@@ -32,6 +59,15 @@
       "avatar": "/images/avatar.png",
       "banner": {
         "src": "/images/banners/autumn-1920.webp",
+        "sources": [
+          { "src": "/images/banners/autumn-640.webp", "width": 640 },
+          { "src": "/images/banners/autumn-1280.webp", "width": 1280 },
+          { "src": "/images/banners/autumn-1920.webp", "width": 1920 },
+          { "src": "/images/banners/autumn-2560.webp", "width": 2560 },
+          { "src": "/images/banners/autumn-3840.webp", "width": 3840 }
+        ],
+        "sizes": "max(100vw, 71.111111vh, 39.111111rem)",
+        "position": 43,
         "credit": { "text": "荻pote @ogipote", "url": "https://x.com/ogipote" }
       }
     },
@@ -40,6 +76,15 @@
       "avatar": "/images/avatar.png",
       "banner": {
         "src": "/images/banners/winter-1920.webp",
+        "sources": [
+          { "src": "/images/banners/winter-640.webp", "width": 640 },
+          { "src": "/images/banners/winter-1280.webp", "width": 1280 },
+          { "src": "/images/banners/winter-1920.webp", "width": 1920 },
+          { "src": "/images/banners/winter-2560.webp", "width": 2560 },
+          { "src": "/images/banners/winter-3840.webp", "width": 3840 }
+        ],
+        "sizes": "max(100vw, 71.111111vh, 39.111111rem)",
+        "position": 34,
         "credit": { "text": "crisalys✨ @Criisalys", "url": "https://x.com/criisalys" }
       }
     }

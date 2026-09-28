@@ -23,6 +23,9 @@ const posts = defineCollection({
 
 const bannerSchema = z.object({
 	src: z.string().min(1),
+	sources: z.array(z.object({ src: z.string().min(1), width: z.number().int().positive() })).nonempty().optional(),
+	sizes: z.string().min(1).optional(),
+	position: z.number().min(0).max(100).optional(),
 	credit: z.object({ text: z.string().min(1), url: z.url() }).optional(),
 });
 const seasonalThemeSchema = z.object({

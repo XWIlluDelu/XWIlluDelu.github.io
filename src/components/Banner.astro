@@ -5,8 +5,21 @@ import { getSiteTheme } from "../lib/site-theme";
 const { banner, season } = await getSiteTheme();
 ---
 
-<figure class="banner" transition:name="site-banner" data-season={season}>
-	<img src={withBase(banner.src)} alt="Site banner" style="object-position: center" loading="lazy" />
+<figure
+	class="banner"
+	transition:name="site-banner"
+	data-season={season}
+	style={{ "--banner-position-y": `${banner.position ?? 50}%` }}
+>
+	<img
+		src={withBase(banner.src)}
+		srcset={banner.sources?.map(source => `${withBase(source.src)} ${source.width}w`).join(", ")}
+		sizes={banner.sizes}
+		alt="Site banner"
+		loading="eager"
+		fetchpriority="high"
+		decoding="async"
+	/>
 	{banner.credit && (
 		<figcaption class="banner-credit">
 			<a href={banner.credit.url} target="_blank" rel="noopener noreferrer">© {banner.credit.text} ↗</a>
@@ -50,5 +63,6 @@ const { banner, season } = await getSiteTheme();
 		width: 100%;
 		height: 100%;
 		object-fit: cover;
+		object-position: center var(--banner-position-y);
 	}
 </style>

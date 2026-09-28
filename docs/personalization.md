@@ -14,6 +14,8 @@ The fork adds these optional settings, validated by [src/content.config.ts](../s
 | `profile.links[].icon` | Choose `github`, `bilibili` or `steam`; defaults to `github`. |
 | `seasonalThemes` | Select a banner, hue and optional avatar at build time; see [Seasons and banners](#seasons-and-banners). |
 | `banner.credit` | Display the artwork credit and source link on the banner. |
+| `banner.position` | Set vertical image alignment as a percentage from `0` to `100`; defaults to `50`. |
+| `banner.sources`, `banner.sizes` | Optional width-based image candidates (`src`, `width`) and the browser's source-size hint. Omission keeps a single-image banner. |
 | `colorPicker` | Keep hue adjustments across client-side navigation; reload restores the built color. Light/dark preference is stored separately. |
 | `fonts: "noto"` | Use the self-hosted Noto fonts in `public/fonts/` for text, controls and code. Omission uses upstream fonts. |
 | Post frontmatter `author` | Use the named author, or the profile owner when omitted. Guest authors are listed by name; the owner's URL is attached only to the owner. |
@@ -23,16 +25,18 @@ The fork adds these optional settings, validated by [src/content.config.ts](../s
 
 [getSeason](../src/lib/seasons.ts) uses the build machine's date. [getSiteTheme](../src/lib/site-theme.ts) selects the season once at build time and supplies its banner, avatar and hue to the components. A new season takes effect when the site is rebuilt.
 
-| Season | Months | Hue | Banner |
-| --- | --- | --- | --- |
-| Spring | March–May | 150 | `banners/spring-1920.webp` |
-| Summer | June–August | 250 | `banners/summer-1920.webp` |
-| Autumn | September–November | 290 | `banners/autumn-1920.webp` |
-| Winter | December–February | 20 | `banners/winter-1920.webp` |
+| Season | Months | Hue | Banner | Y position |
+| --- | --- | --- | --- | --- |
+| Spring | March–May | 150 | `banners/spring-*.webp` | 22% |
+| Summer | June–August | 250 | `banners/summer-*.webp` | 72% |
+| Autumn | September–November | 290 | `banners/autumn-*.webp` | 43% |
+| Winter | December–February | 20 | `banners/winter-*.webp` | 34% |
 
 Each seasonal `avatar` overrides `profile.avatar`. All four currently point to `/images/avatar.png`; replace that image for a shared avatar, or change a season's path for a distinct one. Omit a seasonal avatar to use the profile default.
 
-[Banner.astro](../src/components/Banner.astro) uses `object-fit: cover` in Huwari's existing banner frame, with the image centered.
+Set `banner.position` on the default or seasonal banner: `0` aligns the top, `50` the center, and `100` the bottom; decimals are allowed. Horizontal alignment stays centered, and the setting applies at every screen size. When the image has no vertical overflow, changing Y has no visible effect.
+
+The browser uses `banner.sources` and `banner.sizes` to choose an image for the screen size and pixel density. The banner loads eagerly with high priority. See [banner artwork](../assets/banner-originals/README.md) for file sources and generation instructions.
 
 ## Pixel-art icons
 
@@ -53,7 +57,7 @@ python scripts/pixel-art.py public/images/avatar.png \
 
 ## GitHub Pages
 
-The site is published at `https://xwilludelu.github.io/`. [astro.config.ts](../astro.config.ts) sets that URL and the root base path `/`.
+GitHub Pages is currently unpublished and its deployment workflow is disabled. The configured site URL is `https://xwilludelu.github.io/`. [astro.config.ts](../astro.config.ts) sets that URL and the root base path `/`.
 
 [deploy.yml](../.github/workflows/deploy.yml) builds and deploys through GitHub Actions on pushes to `main`, manual dispatch, and the first day of each month at 04:00 in `Asia/Shanghai` (`cron: "0 4 1 * *"` with `timezone: Asia/Shanghai`). The build also sets `TZ: Asia/Shanghai`, so season selection uses Shanghai time for every trigger.
 
